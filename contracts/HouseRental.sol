@@ -153,6 +153,7 @@ contract HouseRental {
     function sendAgreement(address _to) public returns (bool) {
         require(isLandlord(msg.sender), "You should be a landlord to send the agreement");
         require(isTenant(_to), "The agreement you sent to should be a tenant");
+        require(houses[msg.sender].isHouseAvailable, "Your house is already sold/unavailable!");
         tenantLandlordMap[_to] = msg.sender;
         return true;
     }
