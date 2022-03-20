@@ -7,7 +7,7 @@ describe("House Rental", function () {
   let tenant, landlord;
   let [tenantName, tenantPassword, tenantType, tenantPhone, tenantEmail] = ["Terry", "123", "tenant", "666", "terry@ubc.com"];
   let [landlordName, landlordPassword, landlordType, landlordPhone, landlordEmail] = ["William", "456", "landlord", "666", "william@ubc.ca"];
-  let undefinedAddress = "0x0000000000000000000000000000000000000000";
+  let nullAddress = "0x0000000000000000000000000000000000000000";
 
   before(async function () {
     contract = await ethers.getContractFactory("HouseRental");
@@ -31,20 +31,24 @@ describe("House Rental", function () {
     it("3. Landlord can edit house info", async function() {
       let [houseAddress, rental, description, period] = ["1210 W 1st", "2100", "For renting", "Available from 01/01/2022"];
       await expect(rentalPlatform.connect(landlord).editHouseInfo(houseAddress, rental, description, period, true)).to.be.not.reverted;
-      await expect({... await rentalPlatform.houses(landlord.address)}.houseAddress).to.be.equal(houseAddress);
-      await expect({... await rentalPlatform.houses(landlord.address)}.rental).to.be.equal(rental);
-      await expect({... await rentalPlatform.houses(landlord.address)}.description).to.be.equal(description);
-      await expect({... await rentalPlatform.houses(landlord.address)}.period).to.be.equal(period);
-      await expect({... await rentalPlatform.houses(landlord.address)}.isHouseAvailable).to.be.true;
+      let landlordHouse = {... await rentalPlatform.houses(landlord.address)};
+      
+      await expect(landlordHouse.houseAddress).to.be.equal(houseAddress);
+      await expect(landlordHouse.rental).to.be.equal(rental);
+      await expect(landlordHouse.description).to.be.equal(description);
+      await expect(landlordHouse.period).to.be.equal(period);
+      await expect(landlordHouse.isHouseAvailable).to.be.true;
     });
     
     it("4. Tenant can edit his/her background", async function() {
       let [age, income, isMale, occupation] = [25, 100000, true, "Software Engineer"];
       await expect(rentalPlatform.editBackground(age, income, isMale, occupation)).to.be.not.reverted;
-      await expect({... await rentalPlatform.backgrounds(tenant.address)}.age).to.be.equal(age);
-      await expect({... await rentalPlatform.backgrounds(tenant.address)}.income).to.be.equal(income);
-      await expect({... await rentalPlatform.backgrounds(tenant.address)}.isMale).to.be.true;
-      await expect({... await rentalPlatform.backgrounds(tenant.address)}.occupation).to.be.equal(occupation);
+      let tenantBG = {... await rentalPlatform.backgrounds(tenant.address)};
+
+      await expect(tenantBG.age).to.be.equal(age);
+      await expect(tenantBG.income).to.be.equal(income);
+      await expect(tenantBG.isMale).to.be.true;
+      await expect(tenantBG.occupation).to.be.equal(occupation);
     });
 
     it("5. Check if house is still available", async function() {
@@ -68,7 +72,7 @@ describe("House Rental", function () {
     });
     
     it("9. Landlord can send an agreement to a potential tenant if his house is available", async function () {
-      await expect(await rentalPlatform.tenantLandlordMap(tenant.address)).to.be.equal(undefinedAddress);
+      await expect(await rentalPlatform.tenantLandlordMap(tenant.address)).to.be.equal(nullAddress);
       await expect({... await rentalPlatform.houses(landlord.address)}.isHouseAvailable).to.be.true;
 
       await expect(rentalPlatform.connect(landlord).sendAgreement(tenant.address)).to.be.not.reverted;      
@@ -84,7 +88,7 @@ describe("House Rental", function () {
     it("11. Tenant can cancel the match", async function () {
       await expect(await rentalPlatform.tenantLandlordMap(tenant.address)).to.be.equal(landlord.address);
       await expect(rentalPlatform.cancelMatch()).to.be.not.reverted;      
-      await expect(await rentalPlatform.tenantLandlordMap(tenant.address)).to.be.equal(undefinedAddress);
+      await expect(await rentalPlatform.tenantLandlordMap(tenant.address)).to.be.equal(nullAddress);
     });
   });
 });
