@@ -3,8 +3,7 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 
 contract HouseRental {
-    uint256 id;
-
+    
     constructor() {}
 
     mapping(address => User) public users;
@@ -171,8 +170,4 @@ contract HouseRental {
     function compareString (string memory _str1, string memory _str2) private pure returns (bool) {
         return keccak256(abi.encodePacked(_str1)) == keccak256(abi.encodePacked(_str2));
     }
-
-    // function removeFromAddressList (address[] memory _addresses, uint index) public pure {
-    //     delete _addresses[index];
-    // }
 }
