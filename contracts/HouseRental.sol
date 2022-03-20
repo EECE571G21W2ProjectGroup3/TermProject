@@ -1,5 +1,6 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
+import "hardhat/console.sol";
 
 contract HouseRental {
     uint256 id;
@@ -72,7 +73,7 @@ contract HouseRental {
         return true;
     }   
 
-    function addHouseInfo(
+    function editHouseInfo( //add or change the HouseInfo (Set up front end)
         string memory _address, 
         string memory _rent, 
         string memory _description,
@@ -87,26 +88,13 @@ contract HouseRental {
         houses[msg.sender].isHouseAvailable = _isAvailable; 
     }
 
-    function addBackground(
+    function editBackground(
         uint _age,
         uint _income,
         bool _isMale,
         string memory _occupation
     ) public {
-        require(isTenant(msg.sender), "You should be a tenant to add your own background");
-        backgrounds[msg.sender].age = _age;
-        backgrounds[msg.sender].income = _income;
-        backgrounds[msg.sender].isMale = _isMale;
-        backgrounds[msg.sender].occupation = _occupation;
-    }
-
-    function changeBackground(
-        uint _age, 
-        uint _income, 
-        bool _isMale, 
-        string memory _occupation
-    ) public {
-        require(isTenant(msg.sender), "You should be a tenant to change your background");
+        require(isTenant(msg.sender), "You should be a tenant to edit your own background");
         backgrounds[msg.sender].age = _age;
         backgrounds[msg.sender].income = _income;
         backgrounds[msg.sender].isMale = _isMale;
