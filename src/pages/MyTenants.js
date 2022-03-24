@@ -18,7 +18,7 @@ const MyTenants = () => {
     return (
       <section className="single-house">
         <div className="error">
-          <h3> To be finished...</h3>
+          <h3> To be completed...</h3>
           <form action=""></form>
         </div>
       </section>

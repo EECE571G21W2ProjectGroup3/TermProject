@@ -31,7 +31,7 @@ const Navbar = () => {
         </ul>
         <ul
           className={state.isOpen ? "nav-links show-nav" : "nav-links"}
-          style={{ "margin-left": "auto" }}
+          style={{ marginLeft: "auto" }}
         >
           <li>
             <Link to="/myHouse">My House</Link>

@@ -37,7 +37,7 @@ contract HouseRental {
         uint age;
         uint income;
         bool isMale;        // true->male, false->female
-        string occupation; //  "student etc"
+        string description; 
     }
 
     function register (
@@ -91,13 +91,13 @@ contract HouseRental {
         uint _age,
         uint _income,
         bool _isMale,
-        string memory _occupation
+        string memory _description
     ) public {
         require(isTenant(msg.sender), "You should be a tenant to edit your own background");
         backgrounds[msg.sender].age = _age;
         backgrounds[msg.sender].income = _income;
         backgrounds[msg.sender].isMale = _isMale;
-        backgrounds[msg.sender].occupation = _occupation;
+        backgrounds[msg.sender].description = _description;
     }
 
     function checkAvailability(address _landlordAddress) public view returns(bool) {
@@ -131,9 +131,10 @@ contract HouseRental {
     ) {
         require(isLandlord(msg.sender), "You should be a landlord to get your potential tenants' backgrounds");
         return (
-            users[_tenantAddress].name, users[_tenantAddress].phoneNumber, users[_tenantAddress].email,
-            backgrounds[_tenantAddress].age, backgrounds[_tenantAddress].income, 
-            backgrounds[_tenantAddress].isMale, backgrounds[_tenantAddress].occupation
+            users[_tenantAddress].name, users[_tenantAddress].phoneNumber, 
+            users[_tenantAddress].email, backgrounds[_tenantAddress].age, 
+            backgrounds[_tenantAddress].income, backgrounds[_tenantAddress].isMale, 
+            backgrounds[_tenantAddress].description
         );
     }
 

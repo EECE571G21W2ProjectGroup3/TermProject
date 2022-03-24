@@ -1,5 +1,4 @@
 import React from "react";
-import Form from "../components/Form";
 import room2 from "../images/details-2.jpeg";
 import room3 from "../images/details-3.jpeg";
 import room4 from "../images/details-4.jpeg";
@@ -16,22 +15,37 @@ const MyHouse = () => {
   house = undefined;
 
   if (!house) {
-    let submitFunction = (formContent) => {
-      console.log("See content");
-      console.log(formContent);
-      alert(JSON.stringify(formContent));
-    };
-    let formProps = {
-      title: "Please add/edit your house info...",
-      details: "Include anything about your house here.",
-      textInputArray: [
-        ["Monthly Rent", "$"],
-        ["Period", "MM / YYYY"],
-        ["Address", ""],
-      ],
-      submitFunction: submitFunction,
-    };
-    return <Form {...formProps} />;
+    return (
+      <section className="single-house">
+        <div className="error">
+          <h3> Please add/edit your house info...</h3>
+          <form action=""></form>
+        </div>
+        <div className="single-house-info">
+          <article className="desc">
+            <h3>details</h3>
+            <textarea
+              className="house-description"
+              rows="15"
+              cols="50"
+              placeholder="Anything about your house"
+            ></textarea>
+          </article>
+          <article className="info">
+            <h3>info</h3>
+            <div className="col2">
+              <label>Rent</label>
+              <input className="number" type="text" />
+              <label>Period</label>
+              <input className="expire" type="text" placeholder="MM / YYYY" />
+              <label>Address</label>
+              <input className="inputname" type="text" placeholder="" />
+              <button className="submit">Submit</button>
+            </div>
+          </article>
+        </div>
+      </section>
+    );
   }
 
   const { description, period, rent, address, images } = house;

@@ -41,14 +41,14 @@ describe("House Rental", function () {
     });
     
     it("4. Tenant can edit his/her background", async function() {
-      let [age, income, isMale, occupation] = [25, 100000, true, "Software Engineer"];
-      await expect(rentalPlatform.editBackground(age, income, isMale, occupation)).to.be.not.reverted;
+      let [age, income, isMale, description] = [25, 100000, true, "I am rich!"];
+      await expect(rentalPlatform.editBackground(age, income, isMale, description)).to.be.not.reverted;
       let tenantBG = {... await rentalPlatform.backgrounds(tenant.address)};
 
       await expect(tenantBG.age).to.be.equal(age);
       await expect(tenantBG.income).to.be.equal(income);
       await expect(tenantBG.isMale).to.be.true;
-      await expect(tenantBG.occupation).to.be.equal(occupation);
+      await expect(tenantBG.description).to.be.equal(description);
     });
 
     it("5. Check if house is still available", async function() {

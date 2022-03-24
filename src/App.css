@@ -440,6 +440,7 @@ h6 {
 .desc,
 .info {
   margin: 1rem 0;
+  margin-left: 5rem;
 }
 .desc h3 {
   text-transform: capitalize;
@@ -482,10 +483,6 @@ h6 {
   .single-house-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-column-gap: 2rem;
-  }
-  .info {
-    padding-left: 3rem;
   }
 }
 /* end of single house*/
