@@ -26,7 +26,7 @@ const MyHouse = () => {
           <article className="desc">
             <h3>details</h3>
             <textarea
-              class="house-description"
+              className="house-description"
               rows="15"
               cols="50"
               placeholder="Anything about your house"
@@ -34,14 +34,14 @@ const MyHouse = () => {
           </article>
           <article className="info">
             <h3>info</h3>
-            <div class="col2">
+            <div className="col2">
               <label>Rent</label>
-              <input class="number" type="text" />
+              <input className="number" type="text" />
               <label>Period</label>
-              <input class="expire" type="text" placeholder="MM / YYYY" />
+              <input className="expire" type="text" placeholder="MM / YYYY" />
               <label>Address</label>
-              <input class="inputname" type="text" placeholder="" />
-              <button class="submit">Submit</button>
+              <input className="inputname" type="text" placeholder="" />
+              <button className="submit">Submit</button>
             </div>
           </article>
         </div>

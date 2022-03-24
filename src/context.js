@@ -1,16 +1,14 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import items from "./data";
 //import Client from "./Contentful";
 
 const RoomContext = React.createContext();
 
-export default class RoomProvider extends Component {
-  state = {
+const RoomProvider = (props) => {
+  let [state, setState] = useState({
     rooms: [],
     sortedRooms: [],
-    featuredRooms: [],
     loading: true,
-    //
     type: "all",
     capacity: 1,
     price: 0,
@@ -20,22 +18,19 @@ export default class RoomProvider extends Component {
     maxSize: 0,
     airconditioning: false,
     garden: false,
-  };
+  });
 
   // getData = async () => {
   //   try {
   //     let response = await Client.getEntries({
   //       content_type: "beachResortRoom"
   //     });
-  //     let rooms = this.formatData(response.items);
-
-  //     let featuredRooms = rooms.filter(house => house.featured === true);
+  //     let rooms = formatData(response.items);
   //     //
   //     let maxPrice = Math.max(...rooms.map(item => item.price));
   //     let maxSize = Math.max(...rooms.map(item => item.size));
-  //     this.setState({
+  //     setState({
   //       rooms,
-  //       featuredRooms,
   //       sortedRooms: rooms,
   //       loading: false,
   //       //
@@ -48,26 +43,22 @@ export default class RoomProvider extends Component {
   //   }
   // };
 
-  componentDidMount() {
-    // this.getData();
-    let rooms = this.formatData(items);
-    let featuredRooms = rooms.filter((house) => house.featured === true);
-    //
+  useEffect(() => {
+    // getData();
+    let rooms = formatData(items);
     let maxPrice = Math.max(...rooms.map((item) => item.price));
     let maxSize = Math.max(...rooms.map((item) => item.size));
-    this.setState({
+    setState({
       rooms,
-      featuredRooms,
       sortedRooms: rooms,
       loading: false,
-      //
       price: maxPrice,
       maxPrice,
       maxSize,
     });
-  }
+  }, []);
 
-  formatData(items) {
+  let formatData = (items) => {
     let tempItems = items.map((item) => {
       let id = item.sys.id;
       let images = item.fields.images.map((image) => image.fields.file.url);
@@ -76,26 +67,29 @@ export default class RoomProvider extends Component {
       return house;
     });
     return tempItems;
-  }
-  getRoom = (slug) => {
-    let tempRooms = [...this.state.rooms];
+  };
+
+  let getRoom = (slug) => {
+    let tempRooms = [...state.rooms];
     const house = tempRooms.find((house) => house.slug === slug);
     return house;
   };
-  handleChange = (event) => {
+
+  let handleChange = (event) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
     console.log(name, value);
 
-    this.setState(
+    setState(
       {
         [name]: value,
       },
-      this.filterRooms
+      filterRooms
     );
   };
-  filterRooms = () => {
+
+  let filterRooms = () => {
     let {
       rooms,
       type,
@@ -105,7 +99,7 @@ export default class RoomProvider extends Component {
       maxSize,
       airconditioning,
       garden,
-    } = this.state;
+    } = state;
 
     let tempRooms = [...rooms];
     // transform values
@@ -134,25 +128,26 @@ export default class RoomProvider extends Component {
     if (garden) {
       tempRooms = tempRooms.filter((house) => house.garden === true);
     }
-    this.setState({
+    setState({
       sortedRooms: tempRooms,
     });
   };
-  render() {
-    return (
-      <RoomContext.Provider
-        value={{
-          ...this.state,
-          getRoom: this.getRoom,
-          handleChange: this.handleChange,
-        }}
-      >
-        {this.props.children}
-      </RoomContext.Provider>
-    );
-  }
-}
+
+  return (
+    <RoomContext.Provider
+      value={{
+        ...state,
+        getRoom: getRoom,
+        handleChange: handleChange,
+      }}
+    >
+      {props.children}
+    </RoomContext.Provider>
+  );
+};
 const RoomConsumer = RoomContext.Consumer;
+
+export default RoomProvider;
 
 export { RoomProvider, RoomConsumer, RoomContext };
 

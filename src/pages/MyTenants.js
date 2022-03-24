@@ -1,93 +1,58 @@
-import React, { Component } from "react";
-import defaultBcg from "../images/house-1.jpg";
-import Banner from "../components/Banner";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { RoomContext } from "../context";
+import room2 from "../images/details-2.jpeg";
+import room3 from "../images/details-3.jpeg";
+import room4 from "../images/details-4.jpeg";
+import img1 from "../images/house-1.jpg";
 
-import StyledHero from "../components/StyledHero";
-export default class MyTenants extends Component {
-  constructor(props) {
-    super(props);
-    console.log(this.props);
-    this.state = {
-      slug: this.props.match.params.slug,
-      defaultBcg: defaultBcg,
-    };
-  }
-  static contextType = RoomContext;
+const MyTenants = () => {
+  let house = {
+    description: "You should rent this house",
+    period: "May 2022",
+    rent: "1200",
+    address: "UBC CA",
+    images: [img1, room2, room3, room4],
+  };
+  house = undefined;
 
-  // componentDidMount() {
-  //   console.log(this.props);
-  // }
-  render() {
-    const { getRoom } = this.context; //Get property directly
-    const house = getRoom(this.state.slug);
-
-    if (!house) {
-      return (
-        <div className="error">
-          <h3> no such house could be found...</h3>
-          <Link to="/rooms" className="btn-primary">
-            back to rooms
-          </Link>
-        </div>
-      );
-    }
-    const {
-      name,
-      description,
-      capacity,
-      size,
-      price,
-      extras,
-      airconditioning,
-      garden,
-      images,
-    } = house;
-    const [main, ...defaultImages] = images;
-    console.log(defaultImages);
-
+  if (!house) {
     return (
-      <>
-        <StyledHero img={images[0] || this.state.defaultBcg}>
-          <Banner title={`${name} house`}>
-            <Link to="/rooms" className="btn-primary">
-              back to rooms
-            </Link>
-          </Banner>
-        </StyledHero>
-        <section className="single-house">
-          <div className="single-house-images">
-            {defaultImages.map((item, index) => (
-              <img key={index} src={item} alt={name} />
-            ))}
-          </div>
-          <div className="single-house-info">
-            <article className="desc">
-              <h3>details</h3>
-              <p>{description}</p>
-            </article>
-            <article className="info">
-              <h3>info</h3>
-              <h6>price : £{price}</h6>
-              <h6>size : {size} SQM</h6>
-              <h6>
-                Rooms :{capacity > 1 ? `${capacity} rooms` : `${capacity} room`}
-              </h6>
-              <h6>{garden ? "with garden" : "no garden"}</h6>
-              <h6>{airconditioning && "airconditioning included"}</h6>
-            </article>
-          </div>
-        </section>
-        <section className="house-extras">
-          <h6>extras </h6>
-          <ul className="extras">
-            {extras.map((item, index) => (
-              <li key={index}>- {item}</li>
-            ))}
-          </ul>
-        </section>
-      </>
+      <section className="single-house">
+        <div className="error">
+          <h3> To be finished...</h3>
+          <form action=""></form>
+        </div>
+      </section>
     );
   }
-}
+
+  const { description, period, rent, address, images } = house;
+  const [...defaultImages] = images;
+
+  return (
+    <>
+      (
+      <section className="single-house">
+        <div className="single-house-images">
+          {defaultImages.map((item, index) => (
+            <img key={index} src={item} alt="" />
+          ))}
+        </div>
+        <div className="single-house-info">
+          <article className="desc">
+            <h3>details</h3>
+            <p>{description}</p>
+          </article>
+          <article className="info">
+            <h3>info</h3>
+            <h6>rent : CAD {rent}</h6>
+            <h6>period : {period} SQM</h6>
+            <h6>address : {address}</h6>
+          </article>
+        </div>
+      </section>
+      )
+    </>
+  );
+};
+export default MyTenants;
