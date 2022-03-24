@@ -25,7 +25,7 @@ const Services = () => {
   });
   return (
     <section className="services">
-      <Title title="services" />
+      <Title title="features" />
       <div className="services-center">
         {state.services.map((item) => {
           return (

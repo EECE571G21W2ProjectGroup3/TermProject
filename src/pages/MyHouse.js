@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import room2 from "../images/details-2.jpeg";
 import room3 from "../images/details-3.jpeg";
 import room4 from "../images/details-4.jpeg";
@@ -9,7 +8,7 @@ const MyHouse = () => {
   let house = {
     description: "You should rent this house",
     period: "May 2022",
-    rent: "1200",
+    rent: "CAD 1200",
     address: "UBC CA",
     images: [img1, room2, room3, room4],
   };
@@ -19,7 +18,7 @@ const MyHouse = () => {
     return (
       <section className="single-house">
         <div className="error">
-          <h3> Please add your house info...</h3>
+          <h3> Please add/edit your house info...</h3>
           <form action=""></form>
         </div>
         <div className="single-house-info">
@@ -68,8 +67,8 @@ const MyHouse = () => {
           </article>
           <article className="info">
             <h3>info</h3>
-            <h6>rent : CAD {rent}</h6>
-            <h6>period : {period} SQM</h6>
+            <h6>rent : {rent}</h6>
+            <h6>period : {period}</h6>
             <h6>address : {address}</h6>
           </article>
         </div>

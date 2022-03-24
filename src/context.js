@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import items from "./data";
-//import Client from "./Contentful";
 
 const RoomContext = React.createContext();
 
