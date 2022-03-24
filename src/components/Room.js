@@ -1,11 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import defaultImg from '../images/house-1.jpg';
-import PropTypes from 'prop-types';
-import { memo } from 'react';
+import React from "react";
+import { Link } from "react-router-dom";
+import defaultImg from "../images/house-1.jpg";
+import PropTypes from "prop-types";
+import { memo } from "react";
 const Room = memo(({ house }) => {
   const { name, slug, images, price } = house;
-  // console.log(name);
   return (
     <article className="house">
       <div className="img-container">
@@ -32,7 +31,7 @@ Room.propTypes = {
     name: PropTypes.string.isRequired,
     slug: PropTypes.string.isRequired,
     images: PropTypes.arrayOf(PropTypes.string).isRequired,
-    price: PropTypes.number.isRequired
-  })
+    price: PropTypes.number.isRequired,
+  }),
 };
 export default Room;
