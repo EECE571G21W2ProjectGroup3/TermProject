@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import defaultBcg from "../images/house-1.jpg";
-import Hero from "../components/Hero";
 import Banner from "../components/Banner";
 import { Link } from "react-router-dom";
 import { RoomContext } from "../context";
 
 import StyledHero from "../components/StyledHero";
-export default class SingleRoom extends Component {
+export default class MyTenants extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props);
     this.state = {
       slug: this.props.match.params.slug,
       defaultBcg: defaultBcg,
@@ -20,9 +20,9 @@ export default class SingleRoom extends Component {
   //   console.log(this.props);
   // }
   render() {
-    const { getRoom } = this.context;
+    const { getRoom } = this.context; //Get property directly
     const house = getRoom(this.state.slug);
-    console.log(house);
+
     if (!house) {
       return (
         <div className="error">

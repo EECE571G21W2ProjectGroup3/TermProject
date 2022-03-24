@@ -138,6 +138,52 @@ h6 {
 .nav-links a:hover {
   color: var(--primaryColor);
 }
+.house-description {
+  display: block;
+  width: 400px;
+  height: 300px;
+  padding-left: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  font-size: 17px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  transition: background 0.5s;
+}
+.col2 label {
+  padding-left: 8px;
+  font-size: 15px;
+  color: #444;
+}
+.col2 input {
+  display: block;
+  width: 400px;
+  height: 30px;
+  padding-left: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  font-size: 17px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  transition: background 0.5s;
+}
+.col2 .submit {
+  width: 400px;
+  height: 50px;
+  margin-top: 50px;
+  margin-left: 7px;
+  border-radius: 10px;
+  border: none;
+  background: black;
+  color: white;
+  font-size: 20px;
+  transition: background 0.4s;
+  cursor: pointer;
+}
 
 .show-nav {
   height: 100px;
@@ -161,18 +207,19 @@ h6 {
     padding: 0.5rem 0;
   }
 }
+
 /* end of navbar */
 /* Hero */
 .defaultHero,
 .roomsHero {
   min-height: calc(100vh - 66px);
-  background: url('./images/defaultBcg.jpg') center/cover no-repeat;
+  background: url("./images/defaultBcg.jpg") center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .roomsHero {
-  background-image: url('./images/house-2.jpg');
+  background-image: url("./images/house-2.jpg");
   min-height: 60vh;
 }
 /* End of Hero */

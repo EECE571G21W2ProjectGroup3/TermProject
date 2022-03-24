@@ -1,14 +1,16 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import "./App.css";
 
-import Home from './pages/Home';
-import Rooms from './pages/Rooms';
-import SingleRoom from './pages/SingleRoom';
-import Error from './pages/Error';
+import Home from "./pages/Home";
+import Rooms from "./pages/Rooms";
+import SingleRoom from "./pages/SingleRoom";
+import MyHouse from "./pages/MyHouse";
+import MyTenants from "./pages/MyTenants";
+import Error from "./pages/Error";
 
-import Navbar from './components/Navbar';
+import Navbar from "./components/Navbar";
 
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route } from "react-router-dom";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route exact path="/rooms/" component={Rooms} />
         <Route exact path="/rooms/:slug" component={SingleRoom} />
+        <Route exact path="/myHouse/" component={MyHouse} />
+        <Route exact path="/myTenants/" component={MyTenants} />
         <Route component={Error} />
       </Switch>
     </>
