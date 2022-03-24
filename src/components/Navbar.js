@@ -29,7 +29,10 @@ const Navbar = () => {
             <Link to="/rooms">Houses</Link>
           </li>
         </ul>
-        <ul className={state.isOpen ? "nav-links show-nav" : "nav-links"}>
+        <ul
+          className={state.isOpen ? "nav-links show-nav" : "nav-links"}
+          style={{ "margin-left": "auto" }}
+        >
           <li>
             <Link to="/myHouse">My House</Link>
           </li>
