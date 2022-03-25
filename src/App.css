@@ -76,8 +76,8 @@ h6 {
   margin-left: auto;
 }
 .agreement {
-  text-align: center;
-  margin: 3rem;
+  max-height: 30rem;
+  width: auto;      
 }
 .loading {
   text-transform: capitalize;
