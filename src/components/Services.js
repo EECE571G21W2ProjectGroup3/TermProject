@@ -8,12 +8,12 @@ const Services = () => {
     services: [
       {
         icon: <IoIosPricetag />,
-        title: "Distributed and Secure on Ethereum",
-        info: "This house rental platform is deployed on Ethereum and all the data are safely distributed on the blockchain",
+        title: "Distributed and Secure on Ethereum Blockchain",
+        info: "The rental platform and its data are all safely distributed on the blockchain",
       },
       {
         icon: <IoIosSearch />,
-        title: "Highly Efficient and Clean UI",
+        title: "Highly Efficient and Clean UI/UX",
         info: "We follow the idea of minimalism to create the best ever user experience",
       },
       {

@@ -53,6 +53,7 @@ const MyTenants = () => {
   ];
 
   // tenantsBG = undefined;
+  const handleSubmit = () => {};
 
   if (!tenantsBG) {
     return (
@@ -97,6 +98,12 @@ const MyTenants = () => {
                   <p>{`Age: ${age}`}</p>
                   <p>{`Income: ${income}`}</p>
                   <p>{`Self-Introduction: ${description}`}</p>
+                  <button
+                    className="btn-primary btn-send-agreement"
+                    onClick={handleSubmit}
+                  >
+                    Send Agreement
+                  </button>
                 </div>
               </div>
             );

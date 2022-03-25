@@ -4,10 +4,10 @@
   box-sizing: border-box;
 }
 :root {
-  --primaryColor: #af9a7d;
+  --primaryColor: rgba(4, 57, 94, 1);
   --mainWhite: #fff;
   --offWhite: #f7f7f7;
-  --mainBlack: #222;
+  --mainBlack: rgba(4, 57, 94, 1);
   --mainGrey: #ececec;
   --darkGrey: #cfcfcf;
   --mainTransition: all 0.3s linear;
@@ -57,17 +57,27 @@ h6 {
   display: inline-block;
   text-decoration: none;
   letter-spacing: var(--mainSpacing);
-  color: var(--mainBlack);
+  color: var(--mainWhite);
   background: var(--primaryColor);
   padding: 0.4rem 0.9rem;
   border: 3px solid var(--primaryColor);
   transition: var(--mainTransition);
   text-transform: uppercase;
   cursor: pointer;
+  margin: 0.2rem;
 }
 .btn-primary:hover {
   background: transparent;
   color: var(--primaryColor);
+  text-transform: capitalize;
+}
+.btn-send-agreement {
+  display: flex;
+  margin-left: auto;
+}
+.agreement {
+  text-align: center;
+  margin-top: 10rem;
 }
 .loading {
   text-transform: capitalize;
@@ -173,15 +183,15 @@ h6 {
   border: none;
   transition: background 0.5s;
 }
-.col2 .submit {
+.submit {
   width: 400px;
   height: 50px;
   margin-top: 50px;
   margin-left: 7px;
   border-radius: 10px;
   border: none;
-  background: black;
-  color: white;
+  background: var(--mainBlack);
+  color: var(--mainWhite);
   font-size: 20px;
   transition: background 0.4s;
   cursor: pointer;

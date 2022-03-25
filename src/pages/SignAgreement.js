@@ -1,18 +1,16 @@
 import React from "react";
 
-import classes from './SingleAgreement.module.css';
-
 function SignAgreement() {
   return (
     <>
-      <section className={classes.singleHouse}>
+      <section className="agreement">
         <div>
           <h3>You have a new agreement.</h3>
         </div>
         <div>
-            <button className={classes.btnPrimary}>Sign Agreement</button>
-            <button className={classes.btnPrimary}>Cancel Match</button>
-          </div>
+          <button className="btn-primary">Sign Agreement</button>
+          <button className="btn-primary">Cancel Match</button>
+        </div>
       </section>
     </>
   );

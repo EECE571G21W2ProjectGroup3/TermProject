@@ -7,7 +7,10 @@ const home = () => {
   return (
     <>
       <Hero>
-        <Banner title="just buy a house" subtitle="rooms starting at £145,000">
+        <Banner
+          title="just buy a house"
+          subtitle="rooms starting at $300 per month"
+        >
           <Link to="/rooms" className="btn-primary">
             our houses
           </Link>
