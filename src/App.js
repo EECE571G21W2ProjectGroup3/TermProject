@@ -7,10 +7,13 @@ import SingleRoom from "./pages/SingleRoom";
 import MyHouse from "./pages/MyHouse";
 import MyTenants from "./pages/MyTenants";
 import Error from "./pages/Error";
+import MyBackgrounds from "./pages/MyBackgrounds";
+import SignAgreement from "./pages/SignAgreement";
 
 import Navbar from "./components/Navbar";
 
 import { Switch, Route } from "react-router-dom";
+
 
 function App() {
   return (
@@ -22,6 +25,8 @@ function App() {
         <Route exact path="/rooms/:slug" component={SingleRoom} />
         <Route exact path="/myHouse/" component={MyHouse} />
         <Route exact path="/myTenants/" component={MyTenants} />
+        <Route exact path="/myBackgrounds/" component={MyBackgrounds} />
+        <Route exact path="/availableHouse/" component={SignAgreement} />
         <Route component={Error} />
       </Switch>
     </>

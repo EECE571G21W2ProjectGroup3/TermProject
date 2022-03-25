@@ -39,6 +39,12 @@ const Navbar = () => {
           <li>
             <Link to="/myTenants">My Tenants</Link>
           </li>
+          <li>
+            <Link to="/myBackgrounds">My Background</Link>
+          </li>
+          <li>
+            <Link to="/availableHouse">Sign Agreement</Link>
+          </li>
         </ul>
       </div>
     </nav>

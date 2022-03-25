@@ -1,0 +1,21 @@
+.singleHouse {
+    text-align: center;
+    margin-top: 10rem;
+}
+.btnPrimary {
+    display: inline-block;
+    text-decoration: none;
+    letter-spacing: var(--mainSpacing);
+    color: var(--mainBlack);
+    background: var(--primaryColor);
+    padding: 0.4rem 0.9rem;
+    border: 3px solid var(--primaryColor);
+    transition: var(--mainTransition);
+    text-transform: uppercase;
+    cursor: pointer;
+    margin: 1rem;
+  }
+  .btnPrimary:hover {
+    background: transparent;
+    color: var(--primaryColor);
+  }

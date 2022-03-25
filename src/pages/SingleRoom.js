@@ -6,6 +6,10 @@ import { RoomContext } from "../context";
 
 import StyledHero from "../components/StyledHero";
 const SingleRoom = (props) => {
+  function handleSubmit() {
+
+  }
+
   let state = {
     slug: props.match.params.slug,
     defaultBcg: defaultBcg,
@@ -66,6 +70,7 @@ const SingleRoom = (props) => {
             </h6>
             <h6>{garden ? "with garden" : "no garden"}</h6>
             <h6>{airconditioning && "airconditioning included"}</h6>
+            <button className="btn-primary" onClick={handleSubmit}>Send Background</button>
           </article>
         </div>
       </section>
