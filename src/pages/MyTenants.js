@@ -96,7 +96,7 @@ const MyTenants = () => {
                   <p>{`Email: ${email}`}</p>
                   <p>{`Age: ${age}`}</p>
                   <p>{`Income: ${income}`}</p>
-                  <p>{`Introduction: ${description}`}</p>
+                  <p>{`Self-Introduction: ${description}`}</p>
                 </div>
               </div>
             );
