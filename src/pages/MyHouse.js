@@ -22,7 +22,7 @@ const MyHouse = () => {
       alert(JSON.stringify(formContent));
     };
     let formProps = {
-      title: "Please add/edit your house info...",
+      title: "Please add/edit your house information",
       details: "Include anything about your house here.",
       textInputArray: [
         ["Monthly Rent", "$"],
