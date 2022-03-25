@@ -3,10 +3,17 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 
 contract HouseRental {
-    
-    constructor() {}
+    constructor() {
+        name = "EECE571 HOUSE RENTAL";
+        usersNumber = 0;
+    }
+
+    string public name;
+    uint256 public usersNumber;
+    User[] public usersList;
 
     mapping(address => User) public users;
+    mapping(uint256 => address) public idUsersMap;
     mapping(address => TenantBackground) public backgrounds;
     mapping(address => HouseInfo) public houses;            
     
@@ -18,6 +25,7 @@ contract HouseRental {
  
     // structs
     struct User {
+        uint256 userID;
         string name;
         string password;
         string userType; //either "tenant" or "landlord"
@@ -54,11 +62,18 @@ contract HouseRental {
         require(bytes(_type).length > 0, "type can not be empty");
         require(bytes(_phone).length > 0, "phone can not be empty");
         require(bytes(_email).length > 0, "email can not be empty");
-        users[msg.sender].name = _name;
-        users[msg.sender].password = _password;
-        users[msg.sender].userType = _type;
-        users[msg.sender].phoneNumber = _phone;
-        users[msg.sender].email = _email;
+        usersNumber += 1;
+        uint256 _id = usersNumber;
+        User memory _user;
+        _user.userID = _id;
+        _user.name = _name;
+        _user.password = _password;
+        _user.userType = _type;
+        _user.phoneNumber = _phone;
+        _user.email = _email;
+        idUsersMap[_id] = msg.sender;
+        users[msg.sender] = _user;
+        usersList.push(_user);
         return true;
     }
 
