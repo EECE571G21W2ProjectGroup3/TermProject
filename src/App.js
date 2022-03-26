@@ -1,5 +1,9 @@
 import React from "react";
 import "./App.css";
+import "./LogIn.css";
+// @import url("https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css");
+// import "../LogIn.css";
+// import "https://kit.fontawesome.com/64d58efce2.js";
 
 import Home from "./pages/Home";
 import Rooms from "./pages/Rooms";
@@ -9,18 +13,16 @@ import MyTenants from "./pages/MyTenants";
 import Error from "./pages/Error";
 import MyBackgrounds from "./pages/MyBackgrounds";
 import SignAgreement from "./pages/SignAgreement";
-
-import Navbar from "./components/Navbar";
+import LogIn from "./pages/LogIn";
 
 import { Switch, Route } from "react-router-dom";
-
 
 function App() {
   return (
     <>
-      <Navbar />
       <Switch>
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" component={LogIn} />
+        <Route exact path="/home" component={Home} />
         <Route exact path="/rooms/" component={Rooms} />
         <Route exact path="/rooms/:slug" component={SingleRoom} />
         <Route exact path="/myHouse/" component={MyHouse} />

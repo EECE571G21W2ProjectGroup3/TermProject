@@ -1,4 +1,5 @@
 import React from "react";
+import NavBar from "../components/Navbar";
 
 const MyTenants = () => {
   let tenantsBG = [
@@ -57,17 +58,21 @@ const MyTenants = () => {
 
   if (!tenantsBG) {
     return (
-      <section className="single-house">
-        <div className="error">
-          <h3>No one has expressed interest in your house yet...</h3>
-          <form action=""></form>
-        </div>
-      </section>
+      <>
+        <NavBar />
+        <section className="single-house">
+          <div className="error">
+            <h3>No one has expressed interest in your house yet...</h3>
+            <form action=""></form>
+          </div>
+        </section>
+      </>
     );
   }
 
   return (
     <>
+      <NavBar />
       <section className="single-house">
         <div className="accordion-wrapper">
           {tenantsBG.map((background, index) => {

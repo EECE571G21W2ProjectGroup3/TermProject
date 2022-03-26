@@ -14,7 +14,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="nav-center">
         <div className="nav-header">
-          <Link to="/">
+          <Link to="/home">
             <img className="saleLogo" src={logo} alt="House Sale" />
           </Link>
           <button type="button" className="nav-btn" onClick={handleToggle}>
@@ -23,7 +23,7 @@ const Navbar = () => {
         </div>
         <ul className={state.isOpen ? "nav-links show-nav" : "nav-links"}>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/home">Home</Link>
           </li>
           <li>
             <Link to="/rooms">Houses</Link>

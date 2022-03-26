@@ -1,5 +1,6 @@
 import React from "react";
 import contract from "../images/contract.png";
+import NavBar from "../components/Navbar";
 
 function SignAgreement() {
   let Landlord = [
@@ -30,20 +31,24 @@ function SignAgreement() {
   //Landlord = undefined;
   if (!Landlord) {
     return (
-      <section className="single-house">
-        <div className="error">
-          <h3>No lanlord is satisfies with your application...</h3>
-          <h3>
-            Consider modify your personal background for a better impression
-          </h3>
-          <form action=""></form>
-        </div>
-      </section>
+      <>
+        <NavBar />
+        <section className="single-house">
+          <div className="error">
+            <h3>No lanlord is satisfies with your application...</h3>
+            <h3>
+              Consider modify your personal background for a better impression
+            </h3>
+            <form action=""></form>
+          </div>
+        </section>
+      </>
     );
   }
 
   return (
     <>
+      <NavBar />
       <section className="single-house">
         <div className="accordion-wrapper">
           {Landlord.map((background, index) => {

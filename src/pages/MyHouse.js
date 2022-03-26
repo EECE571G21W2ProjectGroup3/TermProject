@@ -4,6 +4,7 @@ import room2 from "../images/details-2.jpeg";
 import room3 from "../images/details-3.jpeg";
 import room4 from "../images/details-4.jpeg";
 import img1 from "../images/house-1.jpg";
+import NavBar from "../components/Navbar";
 
 const MyHouse = () => {
   let house = {
@@ -31,7 +32,12 @@ const MyHouse = () => {
       ],
       submitFunction: submitFunction,
     };
-    return <Form {...formProps} />;
+    return (
+      <>
+        <NavBar />
+        <Form {...formProps} />
+      </>
+    );
   }
 
   const { description, period, rent, address, images } = house;
@@ -40,6 +46,7 @@ const MyHouse = () => {
   return (
     <>
       (
+      <NavBar />
       <section className="single-house">
         <div className="single-house-images">
           {defaultImages.map((item, index) => (

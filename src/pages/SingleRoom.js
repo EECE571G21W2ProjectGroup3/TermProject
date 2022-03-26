@@ -3,12 +3,11 @@ import defaultBcg from "../images/house-1.jpg";
 import Banner from "../components/Banner";
 import { Link } from "react-router-dom";
 import { RoomContext } from "../context";
+import NavBar from "../components/Navbar";
 
 import StyledHero from "../components/StyledHero";
 const SingleRoom = (props) => {
-  function handleSubmit() {
-
-  }
+  function handleSubmit() {}
 
   let state = {
     slug: props.match.params.slug,
@@ -20,12 +19,15 @@ const SingleRoom = (props) => {
   console.log(house);
   if (!house) {
     return (
-      <div className="error">
-        <h3> no such house could be found...</h3>
-        <Link to="/rooms" className="btn-primary">
-          back to rooms
-        </Link>
-      </div>
+      <>
+        <NavBar />
+        <div className="error">
+          <h3> no such house could be found...</h3>
+          <Link to="/rooms" className="btn-primary">
+            back to rooms
+          </Link>
+        </div>
+      </>
     );
   }
   const {
@@ -43,6 +45,7 @@ const SingleRoom = (props) => {
 
   return (
     <>
+      <NavBar />
       <StyledHero img={images[0] || state.defaultBcg}>
         <Banner title={`${name} house`}>
           <Link to="/rooms" className="btn-primary">
@@ -70,7 +73,9 @@ const SingleRoom = (props) => {
             </h6>
             <h6>{garden ? "with garden" : "no garden"}</h6>
             <h6>{airconditioning && "airconditioning included"}</h6>
-            <button className="btn-primary" onClick={handleSubmit}>Send Background</button>
+            <button className="btn-primary" onClick={handleSubmit}>
+              Send Background
+            </button>
           </article>
         </div>
       </section>
