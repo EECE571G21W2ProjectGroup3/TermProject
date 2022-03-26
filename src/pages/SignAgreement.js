@@ -1,5 +1,5 @@
 import React from "react";
-import contract from '../images/contract.png';
+import contract from "../images/contract.png";
 
 function SignAgreement() {
   let Landlord = [
@@ -33,7 +33,9 @@ function SignAgreement() {
       <section className="single-house">
         <div className="error">
           <h3>No lanlord is satisfies with your application...</h3>
-          <h3>Consider modify your personal background for a better impression</h3>
+          <h3>
+            Consider modify your personal background for a better impression
+          </h3>
           <form action=""></form>
         </div>
       </section>
@@ -42,29 +44,11 @@ function SignAgreement() {
 
   return (
     <>
-      {/*}
-      <section className="agreement">
-        <div>
-          <h3>You have a new agreement.</h3>
-        </div>
-        <div className="agreement">
-          <img src={contract} alt="Contract" />;
-        </div>
-        <div>
-          <button className="btn-primary">Sign Agreement</button>
-          <button className="btn-primary">Cancel Match</button>
-        </div>
-      </section>
-    */ }
       <section className="single-house">
         <div className="accordion-wrapper">
           {Landlord.map((background, index) => {
-            const {
-              name,
-              description,
-            } = background;
+            const { name, description } = background;
             return (
-
               <div key={index} className="accordion">
                 <input
                   type="radio"
@@ -85,18 +69,16 @@ function SignAgreement() {
                   <div className="agreement">
                     <img src={contract} alt="Contract" />
                   </div>
-                  <div>
+                  <div className="sign-agreement-btn">
                     <button className="btn-primary">Sign Agreement</button>
                     <button className="btn-primary">Cancel Match</button>
                   </div>
                 </div>
               </div>
-
             );
           })}
         </div>
       </section>
-
     </>
   );
 }

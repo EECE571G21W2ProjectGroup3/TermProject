@@ -76,8 +76,12 @@ h6 {
   margin-left: auto;
 }
 .agreement {
+  overflow: hidden;
   max-height: 30rem;
-  width: auto;      
+  width: auto;
+}
+.sign-agreement-btn {
+  text-align: center;
 }
 .loading {
   text-transform: capitalize;

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import FormBackground from '../components/FormBackground';
+import Form from '../components/Form';
 
 
 function MyBackgrounds() {
@@ -39,7 +39,7 @@ function MyBackgrounds() {
             ],
             submitFunction: submitFunction,
           };
-          return <FormBackground {...formProps} />;
+          return <Form {...formProps} />;
         }
       
         const { age, income, isMale, description } = background;
