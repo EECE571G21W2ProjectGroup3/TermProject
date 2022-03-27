@@ -21,7 +21,10 @@ contract HouseRental {
     mapping(address => address[]) public landlordTenantsMap;
 
     //used when a tenant receives an invitation to sign an agreement from landlord
-    mapping(address => address) public tenantLandlordMap;
+    mapping(address => address[]) public tenantLandlordsMap;
+
+    //used when we need to know if tenant and landlord are matched together;
+    mapping(address => address) public matchedPairs;
  
     // structs
     struct User {
@@ -133,6 +136,11 @@ contract HouseRental {
         return landlordTenantsMap[msg.sender];
     }
 
+    function getPotentialLandlord () public view returns (address[] memory) {
+        require(isTenant(msg.sender), "You should be a tenant to get your potential landlords' contracts/agreements");
+        return tenantLandlordsMap[msg.sender];
+    }
+
     function getBackground (
         address _tenantAddress
     ) public view returns (
@@ -157,18 +165,38 @@ contract HouseRental {
         require(isLandlord(msg.sender), "You should be a landlord to send the agreement");
         require(isTenant(_to), "The agreement you sent to should be a tenant");
         require(houses[msg.sender].isHouseAvailable, "Your house is already sold/unavailable!");
-        tenantLandlordMap[_to] = msg.sender;
+        tenantLandlordsMap[_to].push(msg.sender);
         return true;
     }
 
-    function signAgreement() public {
+    function signAgreement(address _withLandlord) public {
         require(isTenant(msg.sender), "You should be a tenant to sign this contract");
-        houses[tenantLandlordMap[msg.sender]].isHouseAvailable = false;
+        address[] memory landlordsAddr = tenantLandlordsMap[msg.sender];
+        int index = getIdx(landlordsAddr, _withLandlord);
+        require(index >= 0, "This landlord did not send you an agreement!");
+        houses[landlordsAddr[uint(index)]].isHouseAvailable = false;
+        matchedPairs[msg.sender] = _withLandlord;
+        matchedPairs[_withLandlord] = msg.sender;
     }
 
-    function cancelMatch () public returns (bool) {
-        if (compareString(users[msg.sender].userType, "tenant")) { //tenant cancel match
-            tenantLandlordMap[msg.sender] = address(0);
+    function cancelMatch (address _with) public returns (bool) {
+        if (compareString(users[msg.sender].userType, "tenant")) {
+            require(isLandlord(_with), "You are a tenant but the one you cancel your match with is not a landlord");
+            int index1 = getIdx(landlordTenantsMap[_with], msg.sender);
+            int index2 = getIdx(tenantLandlordsMap[msg.sender], _with);
+            require(index1 >= 0, "This landlord did not send you an agreement.");
+            require(index2 >= 0, "This landlord did not send you an agreement!");
+            delete landlordTenantsMap[_with][uint(index1)];
+            delete tenantLandlordsMap[msg.sender][uint(index2)];
+            return true;
+        } else if (compareString(users[msg.sender].userType, "landlord")){
+            require(isTenant(_with), "You are a landlord but the one you cancel your match with is not a tenant");
+            int index1 = getIdx(landlordTenantsMap[msg.sender], _with);
+            int index2 = getIdx(tenantLandlordsMap[_with], msg.sender);
+            require(index1 >= 0, "This tenant did not express interest in your house.");
+            require(index2 >= 0, "This tenant did not express interest in your house!");
+            delete landlordTenantsMap[msg.sender][uint(index1)];
+            delete tenantLandlordsMap[_with][uint(index2)];
             return true;
         }
         return false;
@@ -185,5 +213,14 @@ contract HouseRental {
 
     function compareString (string memory _str1, string memory _str2) private pure returns (bool) {
         return keccak256(abi.encodePacked(_str1)) == keccak256(abi.encodePacked(_str2));
+    }
+
+    function getIdx (address[] memory _addresses, address _target) public pure returns (int) {
+        for (uint i = 0; i < _addresses.length; i++) {
+            if (_addresses[i] == _target) {
+                return int(i);
+            }
+        }
+        return -1;
     }
 }
