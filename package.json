@@ -1,31 +1,47 @@
 {
   "name": "hardhat-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "test": "npx hardhat test",
     "compile": "npx hardhat compile",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "npx hardhat --network ropsten run ./scripts/ropsten/deploy.js"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.0.5",
-    "@nomiclabs/hardhat-waffle": "^2.0.3",
-    "chai": "^4.3.6",
+    "@nomiclabs/hardhat-ethers": "^2.0.4",
+    "@nomiclabs/hardhat-etherscan": "^3.0.0",
+    "@nomiclabs/hardhat-waffle": "^2.0.2",
+    "@typechain/ethers-v5": "^9.0.0",
+    "@typechain/hardhat": "^4.0.0",
+    "chai": "^4.3.4",
+    "dotenv": "^14.2.0",
     "ethereum-waffle": "^3.4.0",
-    "ethers": "^5.6.1",
-    "hardhat": "^2.9.1"
+    "ethers": "^5.5.3",
+    "find-config": "^1.0.0",
+    "hardhat": "^2.8.3",
+    "hardhat-deploy": "^0.9.27",
+    "ts-node": "^10.4.0",
+    "typechain": "^7.0.0",
+    "typescript": "^4.5.5"
   },
   "dependencies": {
+    "big-number": "^2.0.0",
     "node-sass": "^7.0.1",
     "react": "^16.8.6",
+    "react-async": "^10.0.1",
     "react-dom": "^16.8.6",
     "react-icons": "^3.6.1",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
-    "styled-components": "^4.2.0"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "styled-components": "^4.2.0",
+    "web3": "^1.7.1"
   },
   "browserslist": {
     "production": [

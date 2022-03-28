@@ -1,12 +1,51 @@
 import React, { useEffect, useRef, useState } from "react";
+let contractDetails = require("../smartContract.json");
+
+const Web3 = require("web3");
+const web3 = new Web3(
+  new Web3.providers.HttpProvider(
+    `https://ropsten.infura.io/v3/${contractDetails.INFURA_API_KEY}`
+  )
+);
+
+export const contract = new web3.eth.Contract(
+  contractDetails.abi,
+  contractDetails.contractAddress
+);
 
 const LogIn = () => {
+  // console.log(contract);
+  // const name = contract.methods.name().call());
   const [containerClass, setContainerClass] = useState("container");
-  const loginButton = useRef(null);
   const [logInWithMM, setLogInWithMM] = useState(true);
   const [userWallet, setUserWallet] = useState("");
+  const loginButton = useRef(null);
 
   window.userWalletAddress = null;
+
+  const metaMaskBtn = () => {
+    return (
+      <>
+        <div className="social-media">
+          <div className="flex-col space-y-2 justify-center items-center">
+            <button
+              ref={loginButton}
+              className="social-icon"
+              onClick={logInWithMM ? loginWithMetaMask : signOutOfMetaMask}
+            >
+              <span className="iconify" data-icon="logos:metamask-icon"></span>
+              <script src="https://code.iconify.design/2/2.2.0/iconify.min.js"></script>
+            </button>
+          </div>
+        </div>
+        <p id="userWallet" className="text-lg text-gray-600 my-2">
+          {userWallet &&
+            `Your meta mask address is ${userWallet.substring(0, 5)}...`}
+        </p>
+      </>
+    );
+  };
+
   const toggleButton = () => {
     if (!window.ethereum) {
       alert("MetaMask is not installed");
@@ -62,28 +101,7 @@ const LogIn = () => {
                 <i className="fas fa-lock"></i>
                 <input type="password" placeholder="Password" />
               </div>
-              <div className="social-media">
-                <div className="flex-col space-y-2 justify-center items-center">
-                  <button
-                    id="loginButton"
-                    ref={loginButton}
-                    className="social-icon"
-                    onClick={
-                      logInWithMM ? loginWithMetaMask : signOutOfMetaMask
-                    }
-                  >
-                    <span
-                      className="iconify"
-                      data-icon="logos:metamask-icon"
-                    ></span>
-                    <script src="https://code.iconify.design/2/2.2.0/iconify.min.js"></script>
-                  </button>
-                </div>
-              </div>
-              <p id="userWallet" className="text-lg text-gray-600 my-2">
-                {userWallet &&
-                  `Your meta mask address ${userWallet.substring(0, 5)}...`}
-              </p>
+              {metaMaskBtn()}
               <button className="btn solid">Login</button>
             </form>
             <form action="#" className="sign-up-form">
@@ -100,7 +118,13 @@ const LogIn = () => {
                 <i className="fas fa-lock"></i>
                 <input type="password" placeholder="Password" />
               </div>
-              <input type="submit" className="btn" value="Sign up" />
+              {metaMaskBtn()}
+              <input
+                type="submit"
+                className="btn"
+                value="Sign up"
+                onClick={() => {}}
+              />
             </form>
           </div>
         </div>
