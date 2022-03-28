@@ -23,21 +23,11 @@ const config = {
       },
     },
   },
-  typechain: {
-    outDir: "types",
-    target: "ethers-v5",
-  },
-  etherscan: {
-    apiKey: contractDetails.ETHERSCAN_API,
-  },
   paths: {
     sources: "./contracts",
     tests: "./test",
     cache: "./cache",
     artifacts: "./artifacts",
-  },
-  mocha: {
-    timeout: 40000,
   },
   networks: {
     ropsten: {

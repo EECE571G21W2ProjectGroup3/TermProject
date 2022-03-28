@@ -1,50 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
-let contractDetails = require("../smartContract.json");
-
-const Web3 = require("web3");
-const web3 = new Web3(
-  new Web3.providers.HttpProvider(
-    `https://ropsten.infura.io/v3/${contractDetails.INFURA_API_KEY}`
-  )
-);
-
-export const contract = new web3.eth.Contract(
-  contractDetails.abi,
-  contractDetails.contractAddress
-);
+import React, { useEffect, useRef, useReducer } from "react";
+import {
+  SET_CONTIAINER_CLASS,
+  SET_LOGIN_WITH_MM,
+  SET_USER_WALLET,
+} from "../actions/login";
+import reducer from "../reducers/login";
 
 const LogIn = () => {
-  // console.log(contract);
-  // const name = contract.methods.name().call());
-  const [containerClass, setContainerClass] = useState("container");
-  const [logInWithMM, setLogInWithMM] = useState(true);
-  const [userWallet, setUserWallet] = useState("");
+  const initialState = {
+    containerClass: "container",
+    shouldLogInWithMM: true,
+    walletAddress: "",
+  };
+  const [state, dispatch] = useReducer(reducer, initialState);
   const loginButton = useRef(null);
 
-  window.userWalletAddress = null;
-
-  const metaMaskBtn = () => {
-    return (
-      <>
-        <div className="social-media">
-          <div className="flex-col space-y-2 justify-center items-center">
-            <button
-              ref={loginButton}
-              className="social-icon"
-              onClick={logInWithMM ? loginWithMetaMask : signOutOfMetaMask}
-            >
-              <span className="iconify" data-icon="logos:metamask-icon"></span>
-              <script src="https://code.iconify.design/2/2.2.0/iconify.min.js"></script>
-            </button>
-          </div>
-        </div>
-        <p id="userWallet" className="text-lg text-gray-600 my-2">
-          {userWallet &&
-            `Your meta mask address is ${userWallet.substring(0, 5)}...`}
-        </p>
-      </>
-    );
-  };
+  window.walletAddress = null;
 
   const toggleButton = () => {
     if (!window.ethereum) {
@@ -62,24 +33,60 @@ const LogIn = () => {
         return;
       });
     if (accounts) {
-      window.userWalletAddress = accounts[0];
-      setUserWallet(window.userWalletAddress);
-      setLogInWithMM(false);
+      window.walletAddress = accounts[0];
+      dispatch({ type: SET_USER_WALLET, payload: window.walletAddress });
+      dispatch({ type: SET_LOGIN_WITH_MM, payload: false });
     }
   };
 
   const signOutOfMetaMask = () => {
-    window.userWalletAddress = null;
-    setUserWallet("");
-    setLogInWithMM(true);
+    window.walletAddress = null;
+    dispatch({ type: SET_USER_WALLET, payload: "" });
+    dispatch({ type: SET_LOGIN_WITH_MM, payload: true });
   };
 
   const handleSignUp = () => {
-    setContainerClass("container sign-up-mode");
+    dispatch({ type: SET_CONTIAINER_CLASS, payload: "sign-up-mode" });
   };
 
   const handleSignIn = () => {
-    setContainerClass("container");
+    dispatch({ type: SET_LOGIN_WITH_MM, payload: true });
+    dispatch({ type: SET_CONTIAINER_CLASS, payload: "container" });
+  };
+
+  const metaMaskBtn = () => {
+    return (
+      <>
+        <div className="social-media">
+          <div className="flex-col space-y-2 justify-center items-center">
+            <button
+              ref={loginButton}
+              className="social-icon"
+              onClick={
+                state.shouldLogInWithMM ? loginWithMetaMask : signOutOfMetaMask
+              }
+            >
+              <span className="iconify" data-icon="logos:metamask-icon"></span>
+              <script src="https://code.iconify.design/2/2.2.0/iconify.min.js"></script>
+            </button>
+          </div>
+        </div>
+        {state.walletAddress && (
+          <p id="userWallet" className="text-lg text-gray-600 my-2">
+            Your wallet address: ${state.walletAddress.substring(0, 5)}...
+          </p>
+        )}
+      </>
+    );
+  };
+
+  const inputField = (className, type, placeholder) => {
+    return (
+      <div className="input-field">
+        <i className={className}></i>
+        <input type={type} placeholder={placeholder} />
+      </div>
+    );
   };
 
   useEffect(() => {
@@ -88,36 +95,21 @@ const LogIn = () => {
 
   return (
     <>
-      <div className={containerClass}>
+      <div className={state.containerClass}>
         <div className="forms-container">
           <div className="signin-signup">
             <form action="#" className="sign-in-form">
               <h2 className="title">Sign in</h2>
-              <div className="input-field">
-                <i className="fas fa-user"></i>
-                <input type="text" placeholder="Username" />
-              </div>
-              <div className="input-field">
-                <i className="fas fa-lock"></i>
-                <input type="password" placeholder="Password" />
-              </div>
+              {inputField("fas fa-user", "text", "Username")}
+              {inputField("fas fa-lock", "password", "Password")}
               {metaMaskBtn()}
               <button className="btn solid">Login</button>
             </form>
             <form action="#" className="sign-up-form">
               <h2 className="title">Sign up</h2>
-              <div className="input-field">
-                <i className="fas fa-user"></i>
-                <input type="text" placeholder="Username" />
-              </div>
-              <div className="input-field">
-                <i className="fas fa-envelope"></i>
-                <input type="email" placeholder="Email" />
-              </div>
-              <div className="input-field">
-                <i className="fas fa-lock"></i>
-                <input type="password" placeholder="Password" />
-              </div>
+              {inputField("fas fa-user", "text", "Username")}
+              {inputField("fas fa-envelope", "email", "Email")}
+              {inputField("fas fa-lock", "password", "Password")}
               {metaMaskBtn()}
               <input
                 type="submit"

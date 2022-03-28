@@ -5,7 +5,7 @@ async function main() {
   console.log(
     "=========================================================================================="
   );
-  console.log(`Start deploying MyTokenSell`);
+  console.log(`Start deploying the smart contract`);
   console.log(
     "=========================================================================================="
   );
