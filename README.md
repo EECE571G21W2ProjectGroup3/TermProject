@@ -8,5 +8,7 @@
     <li>2022/03/22 Added React Template (npm install -> npm start to trigger the web app) which used the template provided by https://github.com/ShiroWorks/React-Real-Estate-Website</li>
     <li>2022/03/23 Added MyHouse page</li>
     <li>2022/03/24 Added MyTenants, MyBackground, and SignAgreement page UI</li>
+    <li>2022/03/25 Added LogIn and SignUp page UI</li>
+    <li>2022/03/27 Built a connection between frontend and smart contract using web3 API</li>
   </ul>
 </div>
