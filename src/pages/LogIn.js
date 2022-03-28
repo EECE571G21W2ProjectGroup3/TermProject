@@ -1,26 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 
 const LogIn = () => {
-  const [logInWithMM, setLogInWithMM] = useState(true);
+  const [containerClass, setContainerClass] = useState("container");
   const loginButton = useRef(null);
-  const [logInBtnInnerText, setLogInBtnInnerText] = useState("");
+  const [logInWithMM, setLogInWithMM] = useState(true);
   const [userWallet, setUserWallet] = useState("");
 
   window.userWalletAddress = null;
-  function toggleButton() {
+  const toggleButton = () => {
     if (!window.ethereum) {
-      setLogInBtnInnerText("MetaMask is not installed");
-      loginButton.classList.remove("bg-purple-500", "text-white");
-      loginButton.classList.add(
-        "bg-gray-500",
-        "text-gray-100",
-        "cursor-not-allowed"
-      );
-      return false;
+      alert("MetaMask is not installed");
     }
-  }
+  };
 
-  async function loginWithMetaMask() {
+  const loginWithMetaMask = async () => {
     const accounts = await window.ethereum
       .request({
         method: "eth_requestAccounts",
@@ -29,28 +22,26 @@ const LogIn = () => {
         console.error(e.message);
         return;
       });
-    if (!accounts) {
-      return;
-    }
-
-    window.userWalletAddress = accounts[0];
-    setUserWallet(window.userWalletAddress);
-    setLogInBtnInnerText("Sign out");
-
-    setTimeout(() => {
+    if (accounts) {
+      window.userWalletAddress = accounts[0];
+      setUserWallet(window.userWalletAddress);
       setLogInWithMM(false);
-    }, 200);
-  }
+    }
+  };
 
-  function signOutOfMetaMask() {
+  const signOutOfMetaMask = () => {
     window.userWalletAddress = null;
     setUserWallet("");
-    setLogInBtnInnerText("Sign in");
+    setLogInWithMM(true);
+  };
 
-    setTimeout(() => {
-      setLogInWithMM(true);
-    }, 200);
-  }
+  const handleSignUp = () => {
+    setContainerClass("container sign-up-mode");
+  };
+
+  const handleSignIn = () => {
+    setContainerClass("container");
+  };
 
   useEffect(() => {
     toggleButton();
@@ -58,7 +49,7 @@ const LogIn = () => {
 
   return (
     <>
-      <div className="container">
+      <div className={containerClass}>
         <div className="forms-container">
           <div className="signin-signup">
             <form action="#" className="sign-in-form">
@@ -71,8 +62,6 @@ const LogIn = () => {
                 <i className="fas fa-lock"></i>
                 <input type="password" placeholder="Password" />
               </div>
-              <input type="submit" value="Login" className="btn solid" />
-              <p className="social-text">Or Sign in with other platforms</p>
               <div className="social-media">
                 <div className="flex-col space-y-2 justify-center items-center">
                   <button
@@ -90,22 +79,12 @@ const LogIn = () => {
                     <script src="https://code.iconify.design/2/2.2.0/iconify.min.js"></script>
                   </button>
                 </div>
-                <a href="#" className="social-icon">
-                  <i className="fab fa-facebook-f"></i>
-                </a>
-                <a href="#" className="social-icon">
-                  <i className="fab fa-twitter"></i>
-                </a>
-                <a href="#" className="social-icon">
-                  <i className="fab fa-google"></i>
-                </a>
-                <a href="#" className="social-icon">
-                  <i className="fab fa-linkedin-in"></i>
-                </a>
               </div>
               <p id="userWallet" className="text-lg text-gray-600 my-2">
-                {userWallet}
+                {userWallet &&
+                  `Your meta mask address ${userWallet.substring(0, 5)}...`}
               </p>
+              <button className="btn solid">Login</button>
             </form>
             <form action="#" className="sign-up-form">
               <h2 className="title">Sign up</h2>
@@ -134,11 +113,14 @@ const LogIn = () => {
                 Join our wonderful community and enjoy our services by signing
                 up below!
               </p>
-              <button className="btn transparent" id="sign-up-btn">
+              <button
+                className="btn transparent"
+                id="sign-up-btn"
+                onClick={handleSignUp}
+              >
                 Sign up
               </button>
             </div>
-            <img src="img/log.svg" className="image" alt="" />
           </div>
           <div className="panel right-panel">
             <div className="content">
@@ -147,11 +129,14 @@ const LogIn = () => {
                 You can simply log in with your other platforms account, we
                 recommand using Metamask account.
               </p>
-              <button className="btn transparent" id="sign-in-btn">
+              <button
+                className="btn transparent"
+                id="sign-in-btn"
+                onClick={handleSignIn}
+              >
                 Sign in
               </button>
             </div>
-            <img src="img/register.svg" className="image" alt="" />
           </div>
         </div>
       </div>

@@ -1,9 +1,6 @@
 import React from "react";
-import "./App.css";
-import "./LogIn.css";
-// @import url("https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css");
-// import "../LogIn.css";
-// import "https://kit.fontawesome.com/64d58efce2.js";
+import "./css/App.css";
+import "./css/LogIn.css";
 
 import Home from "./pages/Home";
 import Rooms from "./pages/Rooms";

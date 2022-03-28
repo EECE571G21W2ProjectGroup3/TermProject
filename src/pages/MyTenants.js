@@ -60,7 +60,7 @@ const MyTenants = () => {
     return (
       <>
         <NavBar />
-        <section className="single-house">
+        <section className="list">
           <div className="error">
             <h3>No one has expressed interest in your house yet...</h3>
             <form action=""></form>
@@ -73,7 +73,7 @@ const MyTenants = () => {
   return (
     <>
       <NavBar />
-      <section className="single-house">
+      <section className="list">
         <div className="accordion-wrapper">
           {tenantsBG.map((background, index) => {
             const {

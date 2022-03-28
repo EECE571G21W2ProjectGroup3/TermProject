@@ -33,7 +33,7 @@ function SignAgreement() {
     return (
       <>
         <NavBar />
-        <section className="single-house">
+        <section className="list">
           <div className="error">
             <h3>No lanlord is satisfies with your application...</h3>
             <h3>
@@ -49,7 +49,7 @@ function SignAgreement() {
   return (
     <>
       <NavBar />
-      <section className="single-house">
+      <section className="list">
         <div className="accordion-wrapper">
           {Landlord.map((background, index) => {
             const { name, description } = background;
