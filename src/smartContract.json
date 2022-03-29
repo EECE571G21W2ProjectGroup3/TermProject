@@ -1,8 +1,8 @@
 {
-    "contractAddress": "0xbcd75e97e2d3624d9a700bbb6bd1e6e67f8fa3fd",
-    "INFURA_API_KEY": "6b7810d1047e4535811467d3bebef3b2",
+    "contractAddress": "0xc725f55d6827fea8d29474bf1580cca4a1ac52c4",
+    "ALCHEMY_API_KEY": "h4n-zg-1j2K2QFb36EAtPQp39OMlfj-P",
     "REQUIRED_NETWORK": 3,
-    "MNEMONIC": "Put your own meta account mnemonic",
+    "MNEMONIC": "",
     "ETHERSCAN_API": "JGTCQB1PT2HK5UCF738RUSZ729VKB3TU5Z",
     "abi": [
     {

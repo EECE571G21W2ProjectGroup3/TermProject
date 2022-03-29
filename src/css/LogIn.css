@@ -5,6 +5,23 @@ input {
   font-family: "Poppins", sans-serif;
 }
 
+.user-type {
+  max-width: 380px;
+  width: 100%;
+  background-color: #f0f0f0;
+  color: #a9a9a9;
+  margin: 10px 0;
+  height: 55px;
+  border-radius: 55px;
+  display: grid;
+  grid-template-columns: 15% 85%;
+  padding: 0 0.4rem;
+  position: relative;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
 .container {
   /*background: url(../images/vancouverdowntown.png) no-repeat center; */
   /* min-height: 100vh; */

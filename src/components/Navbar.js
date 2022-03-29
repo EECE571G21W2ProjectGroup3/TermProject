@@ -33,18 +33,34 @@ const Navbar = () => {
           className={state.isOpen ? "nav-links show-nav" : "nav-links"}
           style={{ marginLeft: "auto" }}
         >
-          <li>
-            <Link to="/myHouse">My House</Link>
-          </li>
-          <li>
-            <Link to="/myTenants">My Tenants</Link>
-          </li>
-          <li>
-            <Link to="/myBackgrounds">My Background</Link>
-          </li>
-          <li>
-            <Link to="/availableHouse">Sign Agreement</Link>
-          </li>
+          {sessionStorage["userType"] === "landlord" && (
+            <>
+              <li>
+                <Link to="/myHouse">My House</Link>
+              </li>
+              <li>
+                <Link to="/myTenants">My Tenants</Link>
+              </li>
+            </>
+          )}
+          {sessionStorage["userType"] === "tenant" && (
+            <>
+              <li>
+                <Link to="/myBackgrounds">My Background</Link>
+              </li>
+              <li>
+                <Link to="/availableHouse">Sign Agreement</Link>
+              </li>
+            </>
+          )}
+          {sessionStorage["name"] && (
+            <li>
+              <a>
+                Hi {sessionStorage["name"]} !
+                <br />({sessionStorage["userType"]})
+              </a>
+            </li>
+          )}
         </ul>
       </div>
     </nav>

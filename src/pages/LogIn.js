@@ -1,23 +1,35 @@
 import React, { useEffect, useRef, useReducer } from "react";
+import { contractWrapper } from "../SmartContract";
 import {
   SET_CONTIAINER_CLASS,
   SET_LOGIN_WITH_MM,
   SET_USER_WALLET,
+  SET_LOADER,
+  SET_SIGNUP_ERROR,
+  SET_SIGNUP_FORM,
+  SET_IS_SIGNED_IN,
+  SET_SIGNIN_FORM,
 } from "../actions/login";
 import reducer from "../reducers/login";
 
+const initialState = {
+  containerClass: "container",
+  shouldLogInWithMM: true,
+  walletAddress: "",
+  needLoader: false,
+  signUpError: "",
+  signUpDetails: {},
+  signInDetails: {},
+  isSignedIn: false,
+};
+
 const LogIn = () => {
-  const initialState = {
-    containerClass: "container",
-    shouldLogInWithMM: true,
-    walletAddress: "",
-  };
+  const contract = contractWrapper();
   const [state, dispatch] = useReducer(reducer, initialState);
-  const loginButton = useRef(null);
 
-  window.walletAddress = null;
+  let walletAddress = sessionStorage.getItem("walletAddress");
 
-  const toggleButton = () => {
+  const checkIfMetamaskExists = () => {
     if (!window.ethereum) {
       alert("MetaMask is not installed");
     }
@@ -33,14 +45,16 @@ const LogIn = () => {
         return;
       });
     if (accounts) {
-      window.walletAddress = accounts[0];
-      dispatch({ type: SET_USER_WALLET, payload: window.walletAddress });
+      walletAddress = accounts[0];
+      sessionStorage.setItem("walletAddress", walletAddress);
+      dispatch({ type: SET_USER_WALLET, payload: walletAddress });
       dispatch({ type: SET_LOGIN_WITH_MM, payload: false });
     }
   };
 
   const signOutOfMetaMask = () => {
-    window.walletAddress = null;
+    walletAddress = null;
+    sessionStorage.setItem("walletAddress", walletAddress);
     dispatch({ type: SET_USER_WALLET, payload: "" });
     dispatch({ type: SET_LOGIN_WITH_MM, payload: true });
   };
@@ -49,9 +63,36 @@ const LogIn = () => {
     dispatch({ type: SET_CONTIAINER_CLASS, payload: "sign-up-mode" });
   };
 
+  const handleSignUpSubmit = async () => {
+    // alert(JSON.stringify(state.signUpDetails));
+    // contract.printHello();
+    dispatch({ type: SET_LOADER, payload: true });
+    const result = await contract.register({ ...state.signUpDetails });
+    dispatch({ type: SET_LOADER, payload: false });
+    if (result.error) {
+      dispatch({
+        type: SET_SIGNUP_ERROR,
+        payload: result.error.substring(0, 40),
+      });
+    } else {
+      alert("Signed up successfully!");
+      dispatch({ type: SET_CONTIAINER_CLASS, payload: "container" });
+    }
+  };
+
   const handleSignIn = () => {
     dispatch({ type: SET_LOGIN_WITH_MM, payload: true });
     dispatch({ type: SET_CONTIAINER_CLASS, payload: "container" });
+  };
+
+  const handleSignInSubmit = async () => {
+    const result = await contract.logIn({ ...state.signInDetails });
+    if (!result.error) {
+      console.log(result);
+      alert("Signed in successfully!");
+      await contract.saveUserInfoToStorage();
+      dispatch({ type: SET_IS_SIGNED_IN, payload: true });
+    }
   };
 
   const metaMaskBtn = () => {
@@ -60,7 +101,6 @@ const LogIn = () => {
         <div className="social-media">
           <div className="flex-col space-y-2 justify-center items-center">
             <button
-              ref={loginButton}
               className="social-icon"
               onClick={
                 state.shouldLogInWithMM ? loginWithMetaMask : signOutOfMetaMask
@@ -72,7 +112,7 @@ const LogIn = () => {
           </div>
         </div>
         {state.walletAddress && (
-          <p id="userWallet" className="text-lg text-gray-600 my-2">
+          <p className="text-lg text-gray-600 my-2">
             Your wallet address: ${state.walletAddress.substring(0, 5)}...
           </p>
         )}
@@ -80,82 +120,178 @@ const LogIn = () => {
     );
   };
 
-  const inputField = (className, type, placeholder) => {
+  const inputField = (className, id, type, placeholder, getTextFunction) => {
     return (
       <div className="input-field">
         <i className={className}></i>
-        <input type={type} placeholder={placeholder} />
+        <input
+          data-id={id}
+          type={type}
+          placeholder={placeholder}
+          onChange={getTextFunction}
+        />
       </div>
     );
   };
 
+  const loader = () => {
+    return (
+      <button className="ee">
+        <i className="fa fa-refresh fa-spin"></i>Loading
+      </button>
+    );
+  };
+
+  const getSignUpText = (event) => {
+    const inputValue = event.target.value;
+    dispatch({
+      type: SET_SIGNUP_FORM,
+      payload: {
+        ...state.signUpDetails,
+        [event.target.dataset.id]: inputValue,
+      },
+    });
+  };
+
+  const getSignInText = (event) => {
+    const inputValue = event.target.value;
+    dispatch({
+      type: SET_SIGNIN_FORM,
+      payload: {
+        ...state.signInDetails,
+        [event.target.dataset.id]: inputValue,
+      },
+    });
+  };
+
   useEffect(() => {
-    toggleButton();
+    checkIfMetamaskExists();
   }, []);
 
   return (
     <>
-      <div className={state.containerClass}>
-        <div className="forms-container">
-          <div className="signin-signup">
-            <form action="#" className="sign-in-form">
-              <h2 className="title">Sign in</h2>
-              {inputField("fas fa-user", "text", "Username")}
-              {inputField("fas fa-lock", "password", "Password")}
-              {metaMaskBtn()}
-              <button className="btn solid">Login</button>
-            </form>
-            <form action="#" className="sign-up-form">
-              <h2 className="title">Sign up</h2>
-              {inputField("fas fa-user", "text", "Username")}
-              {inputField("fas fa-envelope", "email", "Email")}
-              {inputField("fas fa-lock", "password", "Password")}
-              {metaMaskBtn()}
-              <input
-                type="submit"
-                className="btn"
-                value="Sign up"
-                onClick={() => {}}
-              />
-            </form>
+      {state.isSignedIn ? (
+        window.location.replace(`/home`)
+      ) : (
+        <div className={state.containerClass}>
+          <div className="forms-container">
+            <div className="signin-signup">
+              <form action="#" className="sign-in-form">
+                <h2 className="title">Sign in</h2>
+                {inputField(
+                  "fas fa-user",
+                  "name",
+                  "text",
+                  "Username",
+                  getSignInText
+                )}
+                {inputField(
+                  "fas fa-lock",
+                  "password",
+                  "password",
+                  "Password",
+                  getSignInText
+                )}
+                {metaMaskBtn()}
+                <button className="btn solid" onClick={handleSignInSubmit}>
+                  Login
+                </button>
+              </form>
+              <form action="#" className="sign-up-form">
+                <h2 className="title">Sign up</h2>
+                {inputField(
+                  "fas fa-user",
+                  "name",
+                  "text",
+                  "Username",
+                  getSignUpText
+                )}
+                {inputField(
+                  "fas fa-lock",
+                  "password",
+                  "password",
+                  "Password",
+                  getSignUpText
+                )}
+                {inputField(
+                  "fas fa-phone",
+                  "phone",
+                  "phone",
+                  "Phone",
+                  getSignUpText
+                )}
+                {inputField(
+                  "fas fa-envelope",
+                  "email",
+                  "email",
+                  "Email",
+                  getSignUpText
+                )}
+                <select
+                  className="user-type"
+                  data-id="userType"
+                  onChange={getSignUpText}
+                >
+                  <option value="">Please select your user type</option>
+                  <option value="tenant">Tenant</option>
+                  <option value="landlord">Landlord</option>
+                </select>
+                {metaMaskBtn()}
+                {state.signUpError && (
+                  <p className="text-lg text-gray-600 my-2">
+                    Error: {state.signUpError} ...
+                  </p>
+                )}
+                {state.needLoader ? (
+                  loader()
+                ) : (
+                  <input
+                    type="submit"
+                    className="btn"
+                    value="Sign up"
+                    onClick={handleSignUpSubmit}
+                  />
+                )}
+              </form>
+            </div>
           </div>
-        </div>
 
-        <div className="panels-container">
-          <div className="panel left-panel">
-            <div className="content">
-              <h3>New here ?</h3>
-              <p>
-                Join our wonderful community and enjoy our services by signing
-                up below!
-              </p>
-              <button
-                className="btn transparent"
-                id="sign-up-btn"
-                onClick={handleSignUp}
-              >
-                Sign up
-              </button>
+          <div className="panels-container">
+            <div className="panel left-panel">
+              <div className="content">
+                <h3>New here ?</h3>
+                <p>
+                  Join our wonderful community and enjoy our services by signing
+                  up below!
+                </p>
+                <button
+                  className="btn transparent"
+                  id="sign-up-btn"
+                  onClick={handleSignUp}
+                >
+                  Sign up
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="panel right-panel">
-            <div className="content">
-              <h3>Already A Member ?</h3>
-              <p>
-                You can simply log in with your other platforms account, we
-                recommand using Metamask account.
-              </p>
-              <button
-                className="btn transparent"
-                id="sign-in-btn"
-                onClick={handleSignIn}
-              >
-                Sign in
-              </button>
+            <div className="panel right-panel">
+              <div className="content">
+                <h3>Already A Member ?</h3>
+                <p>
+                  You can simply log in with your other platforms account, we
+                  recommand using Metamask account.
+                </p>
+                <button
+                  className="btn transparent"
+                  id="sign-in-btn"
+                  onClick={handleSignIn}
+                >
+                  Sign in
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
