@@ -191,7 +191,6 @@ h6 {
   width: 400px;
   height: 50px;
   margin-top: 50px;
-  margin-left: 7px;
   border-radius: 10px;
   border: none;
   background: var(--mainBlack);
@@ -435,7 +434,7 @@ h6 {
   padding: 8rem 0 0 0;
 }
 .single-house {
-  padding: 5rem 0 0 0;
+  padding: 6rem 0 0 0;
 }
 .single-house-images {
   width: 80vw;
@@ -450,15 +449,20 @@ h6 {
   display: block;
 }
 .single-house-info {
+  text-transform: capitalize;
   width: 80vw;
   display: grid;
   grid-template-columns: 1fr;
   margin: 2rem auto;
 }
+.loader {
+  margin-top: 20rem;
+  left: 25%;
+  position: relative;
+}
 .desc,
 .info {
-  margin: 1rem 0;
-  margin-left: 5rem;
+  margin: 1rem 0rem 0 5rem;
 }
 .desc h3 {
   text-transform: capitalize;

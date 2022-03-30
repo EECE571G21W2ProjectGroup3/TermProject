@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const Form = (props) => {
-  let [textAreaId, textInput] = ["textbox", {}];
+  let [textAreaId, textInput] = ["description", {}];
   let { title, details, textInputArray, submitFunction } = props;
   for (const [label] of textInputArray) textInput[[label]] = "";
 

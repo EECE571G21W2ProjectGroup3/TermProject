@@ -4,24 +4,26 @@ import { FaAlignRight } from "react-icons/fa";
 import logo from "../images/logo.gif";
 
 const Navbar = () => {
-  let [state, setState] = useState({
-    isOpen: false,
-  });
+  let [showNavBar, setShowNavBar] = useState(false);
+  let currentUserType = sessionStorage["userType"];
+  let currentUser = sessionStorage["name"];
+  let currentWallet = sessionStorage["walletAddress"];
+
   let handleToggle = () => {
-    setState({ isOpen: !state.isOpen });
+    setShowNavBar(!showNavBar);
   };
   return (
     <nav className="navbar">
       <div className="nav-center">
         <div className="nav-header">
-          <Link to="/home">
+          <Link to="/">
             <img className="saleLogo" src={logo} alt="House Sale" />
           </Link>
           <button type="button" className="nav-btn" onClick={handleToggle}>
             <FaAlignRight className="nav-icon" />
           </button>
         </div>
-        <ul className={state.isOpen ? "nav-links show-nav" : "nav-links"}>
+        <ul className={showNavBar ? "nav-links show-nav" : "nav-links"}>
           <li>
             <Link to="/home">Home</Link>
           </li>
@@ -30,10 +32,10 @@ const Navbar = () => {
           </li>
         </ul>
         <ul
-          className={state.isOpen ? "nav-links show-nav" : "nav-links"}
+          className={showNavBar ? "nav-links show-nav" : "nav-links"}
           style={{ marginLeft: "auto" }}
         >
-          {sessionStorage["userType"] === "landlord" && (
+          {currentUserType === "landlord" && currentWallet && (
             <>
               <li>
                 <Link to="/myHouse">My House</Link>
@@ -43,7 +45,7 @@ const Navbar = () => {
               </li>
             </>
           )}
-          {sessionStorage["userType"] === "tenant" && (
+          {currentUserType === "tenant" && currentWallet && (
             <>
               <li>
                 <Link to="/myBackgrounds">My Background</Link>
@@ -53,12 +55,17 @@ const Navbar = () => {
               </li>
             </>
           )}
-          {sessionStorage["name"] && (
+          {currentUser && currentWallet && (
             <li>
               <a>
-                Hi {sessionStorage["name"]} !
-                <br />({sessionStorage["userType"]})
+                Hi {currentUser} !
+                <br />({currentUserType})
               </a>
+            </li>
+          )}
+          {(!currentWallet || !currentUser) && (
+            <li>
+              <a>You have not signed in nor connected your wallet</a>
             </li>
           )}
         </ul>

@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 const contractDetails = require("./smartContract.json");
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 
@@ -57,11 +55,51 @@ export const contractWrapper = () => {
     return result;
   };
 
+  const editHouseInfo = async (
+    address,
+    rent,
+    description,
+    period,
+    isAvailable
+  ) => {
+    let result = { result: "", error: "" };
+    try {
+      result.result = await deployedContract.methods
+        .editHouseInfo(address, rent, description, period, isAvailable)
+        .send({ from: sessionStorage.getItem("walletAddress") });
+    } catch (err) {
+      alert(err.message);
+      result.error = err.message;
+    }
+    return result;
+  };
+
+  const getHouseInfo = async () => {
+    let result = { result: "", error: "" };
+    const address = sessionStorage.getItem("walletAddress");
+    try {
+      result.result = await deployedContract.methods
+        .houses(address)
+        .call({ from: address });
+    } catch (err) {
+      alert(err.message);
+      result.error = err.message;
+    }
+    return result;
+  };
+
   const printHello = () => {
     alert(deployedContract.methods);
     console.log(deployedContract.methods);
     // alert(sessionStorage.getItem("walletAddress"));
   };
 
-  return { saveUserInfoToStorage, register, logIn, printHello };
+  return {
+    saveUserInfoToStorage,
+    register,
+    logIn,
+    editHouseInfo,
+    getHouseInfo,
+    printHello,
+  };
 };
