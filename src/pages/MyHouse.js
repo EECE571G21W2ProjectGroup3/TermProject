@@ -5,7 +5,7 @@ import NavBar from "../components/Navbar";
 import { contractWrapper } from "../smartContract";
 
 const MyHouse = () => {
-  const roomImages = getRoomsImg(3);
+  const roomImages = getRoomsImg(2);
   const contract = contractWrapper();
   const [showLoader, setShowLoader] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -15,7 +15,6 @@ const MyHouse = () => {
   useEffect(() => {
     const getHouseInfo = async () => {
       let result = await contract.getHouseInfo();
-      console.log(result.result);
       if (!isEmpty(result.result)) {
         setHouse({ ...house, ...result.result, images: roomImages });
       }

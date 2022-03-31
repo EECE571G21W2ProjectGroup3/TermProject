@@ -32,6 +32,7 @@ const config = {
       accounts: {
         mnemonic: contractDetails.MNEMONIC,
       },
+      gas: 850000000,
     },
   },
 };

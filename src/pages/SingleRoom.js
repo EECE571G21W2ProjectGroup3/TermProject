@@ -10,13 +10,12 @@ const SingleRoom = (props) => {
   function handleSubmit() {}
 
   let state = {
-    slug: props.match.params.slug,
+    name: props.match.params.name,
     defaultBcg: defaultBcg,
   };
 
   const { getRoom } = useContext(RoomContext);
-  const house = getRoom(state.slug);
-  console.log(house);
+  const house = getRoom(state.name);
   if (!house) {
     return (
       <>
@@ -30,17 +29,8 @@ const SingleRoom = (props) => {
       </>
     );
   }
-  const {
-    name,
-    description,
-    capacity,
-    size,
-    price,
-    extras,
-    airconditioning,
-    garden,
-    images,
-  } = house;
+  const { name, description, period, rent, images, address, availability } =
+    house;
   const [...defaultImages] = images;
 
   return (
@@ -61,31 +51,20 @@ const SingleRoom = (props) => {
         </div>
         <div className="single-house-info">
           <article className="desc">
-            <h3>details</h3>
+            <h3>description</h3>
             <p>{description}</p>
           </article>
           <article className="info">
             <h3>info</h3>
-            <h6>price : £{price}</h6>
-            <h6>size : {size} SQM</h6>
-            <h6>
-              Rooms :{capacity > 1 ? `${capacity} rooms` : `${capacity} room`}
-            </h6>
-            <h6>{garden ? "with garden" : "no garden"}</h6>
-            <h6>{airconditioning && "airconditioning included"}</h6>
+            <h6>rent : ${rent}</h6>
+            <h6>period : {period} </h6>
+            <h6>address : {address} </h6>{" "}
+            <h6>availability : {availability ? "Yes" : "No"} </h6>
             <button className="btn-primary" onClick={handleSubmit}>
               Send Background
             </button>
           </article>
         </div>
-      </section>
-      <section className="house-extras">
-        <h6>extras </h6>
-        <ul className="extras">
-          {extras.map((item, index) => (
-            <li key={index}>- {item}</li>
-          ))}
-        </ul>
       </section>
     </>
   );

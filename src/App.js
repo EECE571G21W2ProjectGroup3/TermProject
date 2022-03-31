@@ -21,7 +21,7 @@ function App() {
         <Route exact path="/" component={LogIn} />
         <Route exact path="/home" component={Home} />
         <Route exact path="/rooms/" component={Rooms} />
-        <Route exact path="/rooms/:slug" component={SingleRoom} />
+        <Route exact path="/rooms/:name" component={SingleRoom} />
         <Route exact path="/myHouse/" component={MyHouse} />
         <Route exact path="/myTenants/" component={MyTenants} />
         <Route exact path="/myBackgrounds/" component={MyBackgrounds} />

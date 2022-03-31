@@ -8,15 +8,7 @@ const RoomProvider = (props) => {
     rooms: [],
     sortedRooms: [],
     loading: true,
-    type: "all",
-    capacity: 1,
-    price: 0,
-    minPrice: 0,
-    maxPrice: 0,
-    minSize: 0,
-    maxSize: 0,
-    airconditioning: false,
-    garden: false,
+    rent: 0,
   });
 
   // getData = async () => {
@@ -26,14 +18,14 @@ const RoomProvider = (props) => {
   //     });
   //     let rooms = formatData(response.items);
   //     //
-  //     let maxPrice = Math.max(...rooms.map(item => item.price));
+  //     let maxPrice = Math.max(...rooms.map(item => item.rent));
   //     let maxSize = Math.max(...rooms.map(item => item.size));
   //     setState({
   //       rooms,
   //       sortedRooms: rooms,
   //       loading: false,
   //       //
-  //       price: maxPrice,
+  //       rent: maxPrice,
   //       maxPrice,
   //       maxSize
   //     });
@@ -45,22 +37,17 @@ const RoomProvider = (props) => {
   useEffect(() => {
     // getData();
     let rooms = formatData(items);
-    let maxPrice = Math.max(...rooms.map((item) => item.price));
-    let maxSize = Math.max(...rooms.map((item) => item.size));
     setState({
       rooms,
       sortedRooms: rooms,
       loading: false,
-      price: maxPrice,
-      maxPrice,
-      maxSize,
     });
   }, []);
 
   let formatData = (items) => {
     let tempItems = items.map((item) => {
-      let id = item.sys.id;
-      let images = item.fields.images.map((image) => image.fields.file.url);
+      let id = item.fields.landlordId;
+      let images = item.fields.images;
 
       let house = { ...item.fields, images, id };
       return house;
@@ -68,9 +55,9 @@ const RoomProvider = (props) => {
     return tempItems;
   };
 
-  let getRoom = (slug) => {
+  let getRoom = (name) => {
     let tempRooms = [...state.rooms];
-    const house = tempRooms.find((house) => house.slug === slug);
+    const house = tempRooms.find((house) => house.name === name);
     return house;
   };
 
@@ -80,55 +67,8 @@ const RoomProvider = (props) => {
     const name = target.name;
     console.log(name, value);
 
-    setState(
-      {
-        [name]: value,
-      },
-      filterRooms
-    );
-  };
-
-  let filterRooms = () => {
-    let {
-      rooms,
-      type,
-      capacity,
-      price,
-      minSize,
-      maxSize,
-      airconditioning,
-      garden,
-    } = state;
-
-    let tempRooms = [...rooms];
-    // transform values
-    // get capacity
-    capacity = parseInt(capacity);
-    price = parseInt(price);
-    // filter by type
-    if (type !== "all") {
-      tempRooms = tempRooms.filter((house) => house.type === type);
-    }
-    // filter by capacity
-    if (capacity !== 1) {
-      tempRooms = tempRooms.filter((house) => house.capacity >= capacity);
-    }
-    // filter by price
-    tempRooms = tempRooms.filter((house) => house.price <= price);
-    //filter by size
-    tempRooms = tempRooms.filter(
-      (house) => house.size >= minSize && house.size <= maxSize
-    );
-    //filter by airconditioning
-    if (airconditioning) {
-      tempRooms = tempRooms.filter((house) => house.airconditioning === true);
-    }
-    //filter by garden
-    if (garden) {
-      tempRooms = tempRooms.filter((house) => house.garden === true);
-    }
     setState({
-      sortedRooms: tempRooms,
+      [name]: value,
     });
   };
 
