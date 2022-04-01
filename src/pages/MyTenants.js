@@ -1,60 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../components/Navbar";
+import { contractWrapper } from "../contractWrapper";
 
 const MyTenants = () => {
-  let tenantsBG = [
-    {
-      name: "Terry",
-      phoneNumber: "12345678",
-      email: "terry@ubc.ca",
-      age: "24",
-      income: "12000",
-      isMale: true,
-      description: "Hi I am Terry",
-    },
-    {
-      name: "William",
-      phoneNumber: "55555555",
-      email: "william@ubc.ca",
-      age: "24",
-      income: "29000",
-      isMale: true,
-      description: "is William speaking",
-    },
-    {
-      name: "Hart",
-      phoneNumber: "12345678",
-      email: "Hart@ubc.ca",
-      age: "24",
-      income: "2444000",
-      isMale: true,
-      description:
-        "Hi I am HartHi I am HartHi I am HartHi I am HartHi I am HartHi I am Hart",
-    },
-    {
-      name: "Danni",
-      phoneNumber: "12345678",
-      email: "danni@ubc.ca",
-      age: "24",
-      income: "123232000",
-      isMale: false,
-      description:
-        "Hi I am DanniHi I am DanniHi I am DanniHi I am DanniHi I am DanniHi I am Danni",
-    },
-    {
-      name: "Charles",
-      phoneNumber: "12345678",
-      email: "Charles@ubc.ca",
-      age: "24",
-      income: "123232000",
-      isMale: false,
-      description:
-        "Hi I am Charles I am Charles I am Charles I am Charles I am Charles I am Charles",
-    },
-  ];
+  const [showLoader, setShowLoader] = useState(false);
+  const contract = contractWrapper();
+  let [tenantsBG, setTenantsBG] = useState([]);
 
-  // tenantsBG = undefined;
-  const handleSubmit = () => {};
+  useEffect(() => {
+    const getBG = async () => {
+      let result = await contract.getAllTenantsBG();
+      if (!result.error) {
+        setTenantsBG([...tenantsBG, ...result.result]);
+      }
+    };
+    getBG();
+  }, []);
+
+  const handleSubmit = async (event) => {
+    setShowLoader(true);
+    const result = await contract.sendAgreemnt(
+      event.target.dataset.tenantaddress
+    );
+    setShowLoader(false);
+    if (!result.error) {
+      alert("Successfully sent your contract to this tenant");
+    }
+  };
 
   if (!tenantsBG) {
     return (
@@ -77,6 +49,7 @@ const MyTenants = () => {
         <div className="accordion-wrapper">
           {tenantsBG.map((background, index) => {
             const {
+              tenantAddress,
               name,
               phoneNumber,
               email,
@@ -103,12 +76,19 @@ const MyTenants = () => {
                   <p>{`Age: ${age}`}</p>
                   <p>{`Income: ${income}`}</p>
                   <p>{`Self-Introduction: ${description}`}</p>
-                  <button
-                    className="btn-primary btn-send-agreement"
-                    onClick={handleSubmit}
-                  >
-                    Send Agreement
-                  </button>
+                  {showLoader ? (
+                    <button className="ee">
+                      <i className="fa fa-refresh fa-spin"></i>Loading
+                    </button>
+                  ) : (
+                    <button
+                      className="btn-primary btn-send-agreement"
+                      onClick={handleSubmit}
+                      data-tenantaddress={tenantAddress}
+                    >
+                      Send Agreement
+                    </button>
+                  )}
                 </div>
               </div>
             );

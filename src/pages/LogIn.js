@@ -88,7 +88,6 @@ const LogIn = () => {
   const handleSignInSubmit = async () => {
     const result = await contract.logIn({ ...state.signInDetails });
     if (!result.error) {
-      console.log(result);
       alert("Signed in successfully!");
       await contract.saveUserInfoToStorage();
       dispatch({ type: SET_IS_SIGNED_IN, payload: true });

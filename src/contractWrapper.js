@@ -90,6 +90,20 @@ export const contractWrapper = () => {
     return result;
   };
 
+  const getUserAddressById = async (id) => {
+    let result = { result: 0, error: "" };
+    try {
+      const address = await deployedContract.methods.idUsersMap(id).call({
+        from: sessionStorage.getItem("walletAddress"),
+      });
+      result.result = address;
+    } catch (err) {
+      alert(err.message);
+      result.error = err.message;
+    }
+    return result;
+  };
+
   const getUserCount = async () => {
     let result = { result: 0, error: "" };
     try {
@@ -157,6 +171,73 @@ export const contractWrapper = () => {
     return result;
   };
 
+  const getPotentialTenants = async () => {
+    let result = { result: [], error: "" };
+    try {
+      result.result = await deployedContract.methods
+        .getPotentialTenants()
+        .call({ from: sessionStorage.getItem("walletAddress") });
+    } catch (err) {
+      alert(err.message);
+      result.error = err.message;
+    }
+    return result;
+  };
+
+  const getAllTenantsBG = async () => {
+    const tenantsAddresses = (await getPotentialTenants()).result;
+    let result = { result: [], error: "" };
+    try {
+      for (const tenantAddress of tenantsAddresses) {
+        const tenantBackground = await deployedContract.methods
+          .getBackground(tenantAddress)
+          .call({ from: sessionStorage.getItem("walletAddress") });
+        const tenantBG = {
+          tenantAddress: tenantAddress,
+          name: tenantBackground[0],
+          phoneNumber: tenantBackground[1],
+          email: tenantBackground[2],
+          age: tenantBackground[3],
+          income: tenantBackground[4],
+          isMale: tenantBackground[5],
+          description: tenantBackground[6],
+        };
+        result.result.push(tenantBG);
+      }
+    } catch (err) {
+      alert(err.message);
+      result.error = err.message;
+    }
+    return result;
+  };
+
+  const sendAgreemnt = async (tenantAddress) => {
+    let result = { result: "", error: "" };
+    try {
+      result.result = await deployedContract.methods
+        .sendAgreement(tenantAddress)
+        .send({ from: sessionStorage.getItem("walletAddress") });
+    } catch (err) {
+      alert(err.message);
+      result.error = err.message;
+    }
+    return result;
+  };
+
+  const sendBackground = async (landlordId) => {
+    let result = { result: "", error: "" };
+    let landlordAddress = (await getUserAddressById(landlordId)).result;
+    try {
+      result.result = await deployedContract.methods
+        .sendBackground(landlordAddress)
+        .send({ from: sessionStorage.getItem("walletAddress") });
+    } catch (err) {
+      alert(err.message);
+      result.error = err.message;
+    }
+    return result;
+  };
+
   const printHello = () => {
     alert(deployedContract.methods);
     console.log(deployedContract.methods);
@@ -169,10 +250,15 @@ export const contractWrapper = () => {
     logIn,
     editHouseInfo,
     getUser,
+    getUserAddressById,
     getUserCount,
     getAddresses,
     getAllHousesAndLandlords,
     getHouseInfo,
+    getPotentialTenants,
+    getAllTenantsBG,
+    sendAgreemnt,
+    sendBackground,
     printHello,
   };
 };

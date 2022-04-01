@@ -16,7 +16,6 @@ const RoomProvider = (props) => {
     rooms = rooms.map((room) => {
       return { ...room, images: [...getHousesImg(1), ...getRoomsImg(2)] };
     });
-    console.log(rooms);
     setState({
       rooms,
       loading: false,
@@ -37,7 +36,6 @@ const RoomProvider = (props) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
-    console.log(name, value);
 
     setState({
       [name]: value,

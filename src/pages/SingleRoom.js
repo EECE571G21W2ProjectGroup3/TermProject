@@ -1,13 +1,26 @@
-import React, { useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import defaultBcg from "../images/house-1.jpg";
 import Banner from "../components/Banner";
 import { Link } from "react-router-dom";
 import { RoomContext } from "../context";
 import NavBar from "../components/Navbar";
-
+import { contractWrapper } from "../contractWrapper";
 import StyledHero from "../components/StyledHero";
+
 const SingleRoom = (props) => {
-  function handleSubmit() {}
+  const [showLoader, setShowLoader] = useState(false);
+  const contract = contractWrapper();
+  const idRef = useRef();
+
+  const handleSubmit = async () => {
+    const landlordId = idRef.current.getAttribute("data-userid");
+    setShowLoader(true);
+    const result = await contract.sendBackground(parseInt(landlordId));
+    setShowLoader(false);
+    if (!result.error) {
+      alert("Your interest has been sent to this landlord!");
+    }
+  };
 
   let state = {
     name: props.match.params.name,
@@ -30,6 +43,7 @@ const SingleRoom = (props) => {
     );
   }
   const {
+    userID,
     name,
     description,
     period,
@@ -38,6 +52,7 @@ const SingleRoom = (props) => {
     houseAddress,
     isHouseAvailable,
   } = house;
+
   const [...defaultImages] = images;
 
   return (
@@ -67,11 +82,19 @@ const SingleRoom = (props) => {
             <h6>period : {period} </h6>
             <h6>address : {houseAddress} </h6>{" "}
             <h6>availability : {isHouseAvailable ? "Yes" : "No"} </h6>
-            <button className="btn-primary" onClick={handleSubmit}>
-              express interest
-            </button>
+            {sessionStorage["userType"] === "tenant" &&
+              (showLoader ? (
+                <button className="ee">
+                  <i className="fa fa-refresh fa-spin"></i>Loading
+                </button>
+              ) : (
+                <button className="btn-primary" onClick={handleSubmit}>
+                  express interest
+                </button>
+              ))}
           </article>
         </div>
+        <span data-userid={userID} ref={idRef} />
       </section>
     </>
   );
