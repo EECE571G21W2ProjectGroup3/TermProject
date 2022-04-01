@@ -131,7 +131,8 @@ export const contractWrapper = () => {
       for (const address of addresses) {
         const userInfo = (await getUser(address)).result;
         const houseInfo = (await getHouseInfo(address)).result;
-        if (userInfo.userType !== "landlord") continue;
+        if (userInfo.userType !== "landlord" || !houseInfo.isHouseAvailable)
+          continue;
         result.result.push({ ...userInfo, ...houseInfo });
       }
     } catch (err) {
