@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useContext } from "react";
 import defaultBcg from "../images/house-1.jpg";
 import Banner from "../components/Banner";
 import { Link } from "react-router-dom";
@@ -10,10 +10,9 @@ import StyledHero from "../components/StyledHero";
 const SingleRoom = (props) => {
   const [showLoader, setShowLoader] = useState(false);
   const contract = contractWrapper();
-  const idRef = useRef();
 
-  const handleSubmit = async () => {
-    const landlordId = idRef.current.getAttribute("data-userid");
+  const handleSubmit = async (event) => {
+    const landlordId = event.target.dataset.userid;
     setShowLoader(true);
     const result = await contract.sendBackground(parseInt(landlordId));
     setShowLoader(false);
@@ -84,17 +83,20 @@ const SingleRoom = (props) => {
             <h6>availability : {isHouseAvailable ? "Yes" : "No"} </h6>
             {sessionStorage["userType"] === "tenant" &&
               (showLoader ? (
-                <button className="ee">
+                <button className="btn-primary ee">
                   <i className="fa fa-refresh fa-spin"></i>Loading
                 </button>
               ) : (
-                <button className="btn-primary" onClick={handleSubmit}>
+                <button
+                  className="btn-primary"
+                  data-userid={userID}
+                  onClick={handleSubmit}
+                >
                   express interest
                 </button>
               ))}
           </article>
         </div>
-        <span data-userid={userID} ref={idRef} />
       </section>
     </>
   );

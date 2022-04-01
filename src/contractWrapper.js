@@ -2,6 +2,8 @@ const contractDetails = require("./smartContract.json");
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 
 export const contractWrapper = () => {
+  const nullAddress = "0x0000000000000000000000000000000000000000";
+
   const web3 = createAlchemyWeb3(
     `https://eth-ropsten.alchemyapi.io/v2/${contractDetails.ALCHEMY_API_KEY}`
   );
@@ -174,9 +176,10 @@ export const contractWrapper = () => {
   const getPotentialTenants = async () => {
     let result = { result: [], error: "" };
     try {
-      result.result = await deployedContract.methods
+      const addresses = (result.result = await deployedContract.methods
         .getPotentialTenants()
-        .call({ from: sessionStorage.getItem("walletAddress") });
+        .call({ from: sessionStorage.getItem("walletAddress") }));
+      result.result = addresses.filter((each) => each !== nullAddress);
     } catch (err) {
       alert(err.message);
       result.error = err.message;
@@ -187,9 +190,10 @@ export const contractWrapper = () => {
   const getPotentialLandlords = async () => {
     let result = { result: [], error: "" };
     try {
-      result.result = await deployedContract.methods
+      const addresses = await deployedContract.methods
         .getPotentialLandlord()
         .call({ from: sessionStorage.getItem("walletAddress") });
+      result.result = addresses.filter((each) => each !== nullAddress);
     } catch (err) {
       alert(err.message);
       result.error = err.message;
@@ -274,10 +278,17 @@ export const contractWrapper = () => {
     return result;
   };
 
-  const printHello = () => {
-    alert(deployedContract.methods);
-    console.log(deployedContract.methods);
-    // alert(sessionStorage.getItem("walletAddress"));
+  const cancelMatch = async (withWhom) => {
+    let result = { result: "", error: "" };
+    try {
+      result.result = await deployedContract.methods
+        .cancelMatch(withWhom)
+        .send({ from: sessionStorage.getItem("walletAddress") });
+    } catch (err) {
+      alert(err.message);
+      result.error = err.message;
+    }
+    return result;
   };
 
   return {
@@ -297,6 +308,6 @@ export const contractWrapper = () => {
     getLandlordsBG,
     sendAgreemnt,
     sendBackground,
-    printHello,
+    cancelMatch,
   };
 };

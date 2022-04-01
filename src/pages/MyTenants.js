@@ -28,7 +28,7 @@ const MyTenants = () => {
     }
   };
 
-  if (!tenantsBG) {
+  if (tenantsBG.length == 0) {
     return (
       <>
         <NavBar />
@@ -77,7 +77,7 @@ const MyTenants = () => {
                   <p>{`Income: ${income}`}</p>
                   <p>{`Self-Introduction: ${description}`}</p>
                   {showLoader ? (
-                    <button className="ee">
+                    <button className="btn-primary btn-send-agreement ee">
                       <i className="fa fa-refresh fa-spin"></i>Loading
                     </button>
                   ) : (

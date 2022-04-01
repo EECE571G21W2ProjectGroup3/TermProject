@@ -5,13 +5,25 @@ import { contractWrapper } from "../contractWrapper";
 
 function SignAgreement() {
   const contract = contractWrapper();
-  // const [showLoader, setShowLoader] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
   let [landlords, setLandlords] = useState([]);
+
+  const handleCancelMatch = async (event) => {
+    setShowLoader(true);
+    const result = await contract.cancelMatch(
+      event.target.dataset.landlordaddress
+    );
+    console.log(result);
+    setShowLoader(true);
+    if (!result.error) {
+      alert("Cancel match successfully!");
+      window.location.reload();
+    }
+  };
 
   useEffect(() => {
     const getLandlords = async () => {
       const result = await contract.getLandlordsBG();
-      console.log(result);
       if (!result.error) {
         setLandlords([...landlords, ...result.result]);
       }
@@ -19,16 +31,14 @@ function SignAgreement() {
     getLandlords();
   }, []);
 
-  if (!landlords) {
+  if (landlords.length == 0) {
     return (
       <>
         <NavBar />
         <section className="list">
           <div className="error">
-            <h3>No lanlord is satisfies with your application...</h3>
-            <h3>
-              Consider modify your personal background for a better impression
-            </h3>
+            <h3>No lanlord has sent you any agreement...</h3>
+            <h3>Consider modifying your background for a better impression</h3>
             <form action=""></form>
           </div>
         </section>
@@ -65,15 +75,29 @@ function SignAgreement() {
                   <div className="agreement">
                     <img src={contractImg} alt="Contract" />
                   </div>
-                  <div className="sign-agreement-btn">
-                    <button
-                      className="btn-primary"
-                      data-landlordaddress={landlordAddress}
-                    >
-                      Sign Agreement
-                    </button>
-                    <button className="btn-primary">Cancel Match</button>
-                  </div>
+                  {showLoader ? (
+                    <div className="sign-agreement-btn">
+                      <button className="btn-primary ee">
+                        <i className="fa fa-refresh fa-spin"></i>Loading
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="sign-agreement-btn">
+                      <button
+                        className="btn-primary"
+                        data-landlordaddress={landlordAddress}
+                      >
+                        Sign Agreement
+                      </button>
+                      <button
+                        className="btn-primary"
+                        data-landlordaddress={landlordAddress}
+                        onClick={handleCancelMatch}
+                      >
+                        Cancel Match
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             );

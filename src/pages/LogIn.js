@@ -64,8 +64,6 @@ const LogIn = () => {
   };
 
   const handleSignUpSubmit = async () => {
-    // alert(JSON.stringify(state.signUpDetails));
-    // contract.printHello();
     dispatch({ type: SET_LOADER, payload: true });
     const result = await contract.register({ ...state.signUpDetails });
     dispatch({ type: SET_LOADER, payload: false });
@@ -135,7 +133,7 @@ const LogIn = () => {
 
   const loader = () => {
     return (
-      <button className="ee">
+      <button className="btn-primary ee">
         <i className="fa fa-refresh fa-spin"></i>Loading
       </button>
     );

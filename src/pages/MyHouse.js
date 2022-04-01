@@ -62,7 +62,7 @@ const MyHouse = ({ context }) => {
           <NavBar />
           {showLoader ? (
             <section className="single-house-info loader">
-              <button className="ee">
+              <button className="btn-primary ee">
                 <i className="fa fa-refresh fa-spin"></i>Loading
               </button>
             </section>
