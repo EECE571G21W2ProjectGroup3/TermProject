@@ -1,35 +1,25 @@
-import React from "react";
-import contract from "../images/contract.png";
+import React, { useState, useEffect } from "react";
+import contractImg from "../images/contract.png";
 import NavBar from "../components/Navbar";
+import { contractWrapper } from "../contractWrapper";
 
 function SignAgreement() {
-  let Landlord = [
-    {
-      name: "Terry",
-      description: "Hi I am Terry",
-    },
-    {
-      name: "William",
-      description: "is William speaking",
-    },
-    {
-      name: "Hart",
-      description:
-        "Hi I am HartHi I am HartHi I am HartHi I am HartHi I am HartHi I am Hart",
-    },
-    {
-      name: "Danni",
-      description:
-        "Hi I am DanniHi I am DanniHi I am DanniHi I am DanniHi I am DanniHi I am Danni",
-    },
-    {
-      name: "Charles",
-      description:
-        "Hi I am Charles I am Charles I am Charles I am Charles I am Charles I am Charles",
-    },
-  ];
-  //Landlord = undefined;
-  if (!Landlord) {
+  const contract = contractWrapper();
+  // const [showLoader, setShowLoader] = useState(false);
+  let [landlords, setLandlords] = useState([]);
+
+  useEffect(() => {
+    const getLandlords = async () => {
+      const result = await contract.getLandlordsBG();
+      console.log(result);
+      if (!result.error) {
+        setLandlords([...landlords, ...result.result]);
+      }
+    };
+    getLandlords();
+  }, []);
+
+  if (!landlords) {
     return (
       <>
         <NavBar />
@@ -51,8 +41,8 @@ function SignAgreement() {
       <NavBar />
       <section className="list">
         <div className="accordion-wrapper">
-          {Landlord.map((background, index) => {
-            const { name, description } = background;
+          {landlords.map((background, index) => {
+            const { landlordAddress, name, phoneNumber, email } = background;
             return (
               <div key={index} className="accordion">
                 <input
@@ -69,13 +59,19 @@ function SignAgreement() {
                   <div>
                     <h3>You have a new agreement.</h3>
                   </div>
-                  <p>{`Landlord-message: ${description}`}</p>
+                  <p>{`Landlord's phone: ${phoneNumber}`}</p>
+                  <p>{`Landlord's email: ${email}`}</p>
 
                   <div className="agreement">
-                    <img src={contract} alt="Contract" />
+                    <img src={contractImg} alt="Contract" />
                   </div>
                   <div className="sign-agreement-btn">
-                    <button className="btn-primary">Sign Agreement</button>
+                    <button
+                      className="btn-primary"
+                      data-landlordaddress={landlordAddress}
+                    >
+                      Sign Agreement
+                    </button>
                     <button className="btn-primary">Cancel Match</button>
                   </div>
                 </div>

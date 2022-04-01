@@ -184,6 +184,19 @@ export const contractWrapper = () => {
     return result;
   };
 
+  const getPotentialLandlords = async () => {
+    let result = { result: [], error: "" };
+    try {
+      result.result = await deployedContract.methods
+        .getPotentialLandlord()
+        .call({ from: sessionStorage.getItem("walletAddress") });
+    } catch (err) {
+      alert(err.message);
+      result.error = err.message;
+    }
+    return result;
+  };
+
   const getAllTenantsBG = async () => {
     const tenantsAddresses = (await getPotentialTenants()).result;
     let result = { result: [], error: "" };
@@ -203,6 +216,29 @@ export const contractWrapper = () => {
           description: tenantBackground[6],
         };
         result.result.push(tenantBG);
+      }
+    } catch (err) {
+      alert(err.message);
+      result.error = err.message;
+    }
+    return result;
+  };
+
+  const getLandlordsBG = async () => {
+    const landlordsAddresses = (await getPotentialLandlords()).result;
+    let result = { result: [], error: "" };
+    try {
+      for (const landlordAddress of landlordsAddresses) {
+        const landlordBackground = await deployedContract.methods
+          .users(landlordAddress)
+          .call({ from: sessionStorage.getItem("walletAddress") });
+        const landlordBG = {
+          landlordAddress: landlordAddress,
+          name: landlordBackground[1],
+          phoneNumber: landlordBackground[4],
+          email: landlordBackground[5],
+        };
+        result.result.push(landlordBG);
       }
     } catch (err) {
       alert(err.message);
@@ -256,7 +292,9 @@ export const contractWrapper = () => {
     getAllHousesAndLandlords,
     getHouseInfo,
     getPotentialTenants,
+    getPotentialLandlords,
     getAllTenantsBG,
+    getLandlordsBG,
     sendAgreemnt,
     sendBackground,
     printHello,
