@@ -1,32 +1,28 @@
 import React, { useState, useEffect } from "react";
 import Form from "../components/Form";
-import { getRoomsImg } from "../imgGenerator";
 import NavBar from "../components/Navbar";
-import { contractWrapper } from "../smartContract";
+import { contractWrapper } from "../contractWrapper";
+import { withRoomConsumer } from "../context";
 
-const MyHouse = () => {
-  const roomImages = getRoomsImg(2);
+const MyHouse = ({ context }) => {
+  const { rooms } = context;
   const contract = contractWrapper();
   const [showLoader, setShowLoader] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [house, setHouse] = useState({ images: [] });
-  // house = undefined;
 
   useEffect(() => {
     const getHouseInfo = async () => {
-      let result = await contract.getHouseInfo();
-      if (!isEmpty(result.result)) {
-        setHouse({ ...house, ...result.result, images: roomImages });
+      const userID = (await contract.getUser()).result.userID;
+      for (const room of rooms) {
+        if (room.userID === userID) {
+          setHouse({ ...room });
+          break;
+        }
       }
     };
     getHouseInfo();
-  }, []);
-
-  const isEmpty = (house) => {
-    const keys = ["description", "rental", "period", "houseAddress"];
-    for (const key in keys) if (house[key]) return false;
-    return true;
-  };
+  }, [rooms, contract]);
 
   let handleSubmit = async (formContent) => {
     let { description, rent, period, address, available } = formContent;
@@ -40,11 +36,10 @@ const MyHouse = () => {
       available
     );
     setShowLoader(false);
+    setShowEdit(false);
     if (!result.error) {
       alert("Successfully edited your house info!");
-      let result = await contract.getHouseInfo();
-      setHouse({ ...house, ...result.result });
-      setShowEdit(false);
+      window.location.reload();
     }
   };
 
@@ -124,4 +119,4 @@ const MyHouse = () => {
   );
 };
 
-export default MyHouse;
+export default withRoomConsumer(MyHouse);

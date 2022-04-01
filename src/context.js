@@ -1,59 +1,31 @@
 import React, { useState, useEffect } from "react";
-import items from "./data";
+import { contractWrapper } from "./contractWrapper";
+import { getHousesImg, getRoomsImg } from "./imgGenerator";
 
 const RoomContext = React.createContext();
 
 const RoomProvider = (props) => {
+  const contract = contractWrapper();
   let [state, setState] = useState({
     rooms: [],
-    sortedRooms: [],
     loading: true,
-    rent: 0,
   });
 
-  // getData = async () => {
-  //   try {
-  //     let response = await Client.getEntries({
-  //       content_type: "beachResortRoom"
-  //     });
-  //     let rooms = formatData(response.items);
-  //     //
-  //     let maxPrice = Math.max(...rooms.map(item => item.rent));
-  //     let maxSize = Math.max(...rooms.map(item => item.size));
-  //     setState({
-  //       rooms,
-  //       sortedRooms: rooms,
-  //       loading: false,
-  //       //
-  //       rent: maxPrice,
-  //       maxPrice,
-  //       maxSize
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  useEffect(() => {
-    // getData();
-    let rooms = formatData(items);
+  const getData = async () => {
+    let rooms = (await contract.getAllHousesAndLandlords()).result;
+    rooms = rooms.map((room) => {
+      return { ...room, images: [...getHousesImg(1), ...getRoomsImg(2)] };
+    });
+    console.log(rooms);
     setState({
       rooms,
-      sortedRooms: rooms,
       loading: false,
     });
-  }, []);
-
-  let formatData = (items) => {
-    let tempItems = items.map((item) => {
-      let id = item.fields.landlordId;
-      let images = item.fields.images;
-
-      let house = { ...item.fields, images, id };
-      return house;
-    });
-    return tempItems;
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   let getRoom = (name) => {
     let tempRooms = [...state.rooms];

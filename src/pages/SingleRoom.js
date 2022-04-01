@@ -29,8 +29,15 @@ const SingleRoom = (props) => {
       </>
     );
   }
-  const { name, description, period, rent, images, address, availability } =
-    house;
+  const {
+    name,
+    description,
+    period,
+    rental,
+    images,
+    houseAddress,
+    isHouseAvailable,
+  } = house;
   const [...defaultImages] = images;
 
   return (
@@ -56,12 +63,12 @@ const SingleRoom = (props) => {
           </article>
           <article className="info">
             <h3>info</h3>
-            <h6>rent : ${rent}</h6>
+            <h6>rent : ${rental}</h6>
             <h6>period : {period} </h6>
-            <h6>address : {address} </h6>{" "}
-            <h6>availability : {availability ? "Yes" : "No"} </h6>
+            <h6>address : {houseAddress} </h6>{" "}
+            <h6>availability : {isHouseAvailable ? "Yes" : "No"} </h6>
             <button className="btn-primary" onClick={handleSubmit}>
-              Send Background
+              express interest
             </button>
           </article>
         </div>

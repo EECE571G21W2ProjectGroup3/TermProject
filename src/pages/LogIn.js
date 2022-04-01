@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from "react";
-import { contractWrapper } from "../smartContract";
+import { contractWrapper } from "../contractWrapper";
 import {
   SET_CONTIAINER_CLASS,
   SET_LOGIN_WITH_MM,

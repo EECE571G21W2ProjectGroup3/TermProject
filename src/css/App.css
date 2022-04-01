@@ -87,6 +87,9 @@ h6 {
   text-align: center;
   margin-top: 3rem;
 }
+.loading img{
+  display: inline;
+}
 .error {
   padding-top: 66px;
   text-align: center;

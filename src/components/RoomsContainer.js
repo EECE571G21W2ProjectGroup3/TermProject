@@ -5,7 +5,7 @@ import Title from "./Title";
 import RoomsList from "./RoomsList";
 
 function RoomContainer({ context }) {
-  const { loading, sortedRooms } = context;
+  const { loading, rooms } = context;
   if (loading) {
     return <Loading />;
   }
@@ -13,7 +13,7 @@ function RoomContainer({ context }) {
     <>
       <section className="filter-container">
         <Title title="Houses" />
-        <RoomsList rooms={sortedRooms} />
+        <RoomsList rooms={rooms} />
       </section>
     </>
   );
