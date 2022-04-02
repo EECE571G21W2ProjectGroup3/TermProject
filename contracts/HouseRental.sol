@@ -205,9 +205,10 @@ contract HouseRental {
         return false;
     }
 
-    function resetMatch(address _with) public returns (bool) {
+    function resetMatch() public returns (bool) {
+        address matchedAddress = matchedPairs[msg.sender];
         matchedPairs[msg.sender] = address(0);
-        matchedPairs[_with] = address(0);
+        matchedPairs[matchedAddress] = address(0);
         return true;
     }
 

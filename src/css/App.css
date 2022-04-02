@@ -96,7 +96,7 @@ h6 {
 .error {
   padding-top: 66px;
   text-align: center;
-  text-transform: uppercase;
+  text-transform: capitalize;
   margin: 2rem 0;
   margin-top: 5rem;
 }

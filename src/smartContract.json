@@ -1,5 +1,5 @@
 {
-    "contractAddress": "0xe2a2ff453aB3779A1E881E559e4587b27caA9a7F",
+    "contractAddress": "0xf0f388786dD9e6AB08807734e08567Bb6E7EF331",
     "ALCHEMY_API_KEY": "h4n-zg-1j2K2QFb36EAtPQp39OMlfj-P",
     "REQUIRED_NETWORK": 3,
     "MNEMONIC": "",
@@ -420,13 +420,7 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_with",
-          "type": "address"
-        }
-      ],
+      "inputs": [],
       "name": "resetMatch",
       "outputs": [
         {

@@ -5,21 +5,47 @@ import { contractWrapper } from "../contractWrapper";
 
 function SignAgreement() {
   const contract = contractWrapper();
+  const [matchedUser, setMatchedUser] = useState({});
   const [showLoader, setShowLoader] = useState(false);
   let [landlords, setLandlords] = useState([]);
 
-  const handleSignAgreement = async (event) => {};
+  const handleSignAgreement = async (event) => {
+    const landlordAddress = event.target.dataset.landlordaddress;
+    setShowLoader(true);
+    const result = await contract.signAgreement(landlordAddress);
+    setShowLoader(false);
+    if (!result.error) {
+      alert("You have successfully signed an agreement with this landlord!");
+      await getMatchedPair();
+    }
+  };
 
   const handleCancelMatch = async (event) => {
     setShowLoader(true);
     const result = await contract.cancelMatch(
       event.target.dataset.landlordaddress
     );
-    console.log(result);
-    setShowLoader(true);
+    setShowLoader(false);
     if (!result.error) {
       alert("Cancel match successfully!");
       window.location.reload();
+    }
+  };
+
+  const resetMatch = async () => {
+    setShowLoader(true);
+    const result = await contract.resetMatch();
+    setShowLoader(false);
+    if (!result.error) {
+      alert("You can now start a new search again!");
+      window.location.reload();
+    }
+  };
+
+  const getMatchedPair = async () => {
+    const result = await contract.getMatchedPair();
+    if (!result.error) {
+      setMatchedUser({ ...result.result });
     }
   };
 
@@ -31,9 +57,20 @@ function SignAgreement() {
       }
     };
     getLandlords();
+    getMatchedPair();
   }, []);
 
-  if (landlords.length === 0) {
+  const loader = () => {
+    return (
+      <>
+        <button className="btn-primary ee">
+          <i className="fa fa-refresh fa-spin"></i>Loading
+        </button>
+      </>
+    );
+  };
+
+  const showNoLandlordMsg = () => {
     return (
       <>
         <NavBar />
@@ -46,67 +83,101 @@ function SignAgreement() {
         </section>
       </>
     );
-  }
+  };
+
+  const showMatchedUser = () => {
+    return (
+      <>
+        <section className="list">
+          <div className="error">
+            <h3>
+              Congratulations! You have signed an agreement with{" "}
+              {matchedUser.name}...
+            </h3>
+            <form action=""></form>
+            {showLoader ? (
+              loader()
+            ) : (
+              <button className="btn-primary" onClick={resetMatch}>
+                Start a new search
+              </button>
+            )}
+          </div>
+        </section>
+      </>
+    );
+  };
+
+  const agreements = () => {
+    return (
+      <>
+        <section className="list">
+          <div className="accordion-wrapper">
+            {landlords.map((background, index) => {
+              const { landlordAddress, name, phoneNumber, email } = background;
+              return (
+                <div key={index} className="accordion">
+                  <input
+                    type="radio"
+                    name="radio-a"
+                    id={`check${index}`}
+                    defaultChecked={index === 0 ? true : false}
+                  />
+                  <label
+                    className="accordion-label agreement-landlord-name"
+                    htmlFor={`check${index}`}
+                  >
+                    {`${name}`}
+                  </label>
+
+                  <div className="accordion-content">
+                    <div>
+                      <h3>You have a new agreement.</h3>
+                    </div>
+                    <p>{`Landlord's phone: ${phoneNumber}`}</p>
+                    <p>{`Landlord's email: ${email}`}</p>
+
+                    <div className="agreement">
+                      <img src={contractImg} alt="Contract" />
+                    </div>
+                    {showLoader ? (
+                      <div className="sign-agreement-btn">{loader()}</div>
+                    ) : (
+                      <div className="sign-agreement-btn">
+                        <button
+                          className="btn-primary"
+                          data-landlordaddress={landlordAddress}
+                          onClick={handleSignAgreement}
+                        >
+                          Sign Agreement
+                        </button>
+                        <button
+                          className="btn-primary"
+                          data-landlordaddress={landlordAddress}
+                          onClick={handleCancelMatch}
+                        >
+                          Cancel Match
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      </>
+    );
+  };
 
   return (
     <>
       <NavBar />
-      <section className="list">
-        <div className="accordion-wrapper">
-          {landlords.map((background, index) => {
-            const { landlordAddress, name, phoneNumber, email } = background;
-            return (
-              <div key={index} className="accordion">
-                <input
-                  type="radio"
-                  name="radio-a"
-                  id={`check${index}`}
-                  defaultChecked={index === 0 ? true : false}
-                />
-                <label className="accordion-label agreement-landlord-name" htmlFor={`check${index}`}>
-                  {`${name}`}
-                </label>
-
-                <div className="accordion-content">
-                  <div>
-                    <h3>You have a new agreement.</h3>
-                  </div>
-                  <p>{`Landlord's phone: ${phoneNumber}`}</p>
-                  <p>{`Landlord's email: ${email}`}</p>
-
-                  <div className="agreement">
-                    <img src={contractImg} alt="Contract" />
-                  </div>
-                  {showLoader ? (
-                    <div className="sign-agreement-btn">
-                      <button className="btn-primary ee">
-                        <i className="fa fa-refresh fa-spin"></i>Loading
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="sign-agreement-btn">
-                      <button
-                        className="btn-primary"
-                        data-landlordaddress={landlordAddress}
-                        onClick={handleSignAgreement}
-                      >
-                        Sign Agreement
-                      </button>
-                      <button
-                        className="btn-primary"
-                        data-landlordaddress={landlordAddress}
-                        onClick={handleCancelMatch}
-                      >
-                        Cancel Match
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      {Object.keys(matchedUser).length !== 0
+        ? showMatchedUser()
+        : landlords.length === 0
+        ? showNoLandlordMsg()
+        : agreements()}
     </>
   );
 }

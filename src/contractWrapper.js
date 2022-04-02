@@ -251,6 +251,24 @@ export const contractWrapper = () => {
     return result;
   };
 
+  const getMatchedPair = async () => {
+    const address = sessionStorage.getItem("walletAddress");
+    let result = { result: {}, error: "" };
+    try {
+      const matchedUser = await deployedContract.methods
+        .matchedPairs(address)
+        .call({ from: address });
+      if (matchedUser !== nullAddress) {
+        const userInfo = (await getUser(matchedUser)).result;
+        result.result = { ...userInfo, matchedAddress: matchedUser };
+      }
+    } catch (err) {
+      alert(err.message);
+      result.error = err.message;
+    }
+    return result;
+  };
+
   const sendAgreemnt = async (tenantAddress) => {
     let result = { result: "", error: "" };
     try {
@@ -278,11 +296,37 @@ export const contractWrapper = () => {
     return result;
   };
 
+  const signAgreement = async (withWhom) => {
+    let result = { result: "", error: "" };
+    try {
+      result.result = await deployedContract.methods
+        .signAgreement(withWhom)
+        .send({ from: sessionStorage.getItem("walletAddress") });
+    } catch (err) {
+      alert(err.message);
+      result.error = err.message;
+    }
+    return result;
+  };
+
   const cancelMatch = async (withWhom) => {
     let result = { result: "", error: "" };
     try {
       result.result = await deployedContract.methods
         .cancelMatch(withWhom)
+        .send({ from: sessionStorage.getItem("walletAddress") });
+    } catch (err) {
+      alert(err.message);
+      result.error = err.message;
+    }
+    return result;
+  };
+
+  const resetMatch = async () => {
+    let result = { result: "", error: "" };
+    try {
+      result.result = await deployedContract.methods
+        .resetMatch()
         .send({ from: sessionStorage.getItem("walletAddress") });
     } catch (err) {
       alert(err.message);
@@ -306,8 +350,11 @@ export const contractWrapper = () => {
     getPotentialLandlords,
     getAllTenantsBG,
     getLandlordsBG,
+    getMatchedPair,
     sendAgreemnt,
     sendBackground,
+    signAgreement,
     cancelMatch,
+    resetMatch,
   };
 };
