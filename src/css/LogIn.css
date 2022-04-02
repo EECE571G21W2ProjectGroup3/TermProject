@@ -1,4 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
 body,
 input {
     font-family: "Poppins", sans-serif;
@@ -21,9 +27,27 @@ input {
     text-align: center;
 }
 
+section {
+    min-height: 95vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .container {
-    /*background: url(../images/vancouverdowntown.png) no-repeat center; */
-    /* min-height: 100vh; */
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.199);
+    padding: 50px 30px;
+    border-radius: 0px;
+    min-width: 800px;
+    max-width: 2500px;
+    min-height: 936px;
+    margin: 0 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f6f5f7;
+    position: relative;
     overflow: hidden;
 }
 
