@@ -57,7 +57,7 @@ const Navbar = () => {
           )}
           {currentUser && currentWallet && (
             <li>
-              <a>
+              <a className="welcome_user">
                 Hi {currentUser} !
                 <br />({currentUserType})
               </a>

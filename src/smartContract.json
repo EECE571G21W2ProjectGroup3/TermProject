@@ -1,5 +1,5 @@
 {
-    "contractAddress": "0xc725f55d6827fea8d29474bf1580cca4a1ac52c4",
+    "contractAddress": "0xe2a2ff453aB3779A1E881E559e4587b27caA9a7F",
     "ALCHEMY_API_KEY": "h4n-zg-1j2K2QFb36EAtPQp39OMlfj-P",
     "REQUIRED_NETWORK": 3,
     "MNEMONIC": "",
@@ -409,6 +409,25 @@
         }
       ],
       "name": "register",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_with",
+          "type": "address"
+        }
+      ],
+      "name": "resetMatch",
       "outputs": [
         {
           "internalType": "bool",

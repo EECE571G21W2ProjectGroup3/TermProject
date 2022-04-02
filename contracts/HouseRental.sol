@@ -172,11 +172,14 @@ contract HouseRental {
     function signAgreement(address _withLandlord) public {
         require(isTenant(msg.sender), "You should be a tenant to sign this contract");
         address[] memory landlordsAddr = tenantLandlordsMap[msg.sender];
-        int index = getIdx(landlordsAddr, _withLandlord);
-        require(index >= 0, "This landlord did not send you an agreement!");
-        houses[landlordsAddr[uint(index)]].isHouseAvailable = false;
+        int index1 = getIdx(landlordTenantsMap[_withLandlord], msg.sender);
+        int index2 = getIdx(landlordsAddr, _withLandlord);
+        require(index2 >= 0, "This landlord did not send you an agreement!");
+        houses[landlordsAddr[uint(index2)]].isHouseAvailable = false;
         matchedPairs[msg.sender] = _withLandlord;
         matchedPairs[_withLandlord] = msg.sender;
+        delete landlordTenantsMap[_withLandlord][uint(index1)];
+        delete tenantLandlordsMap[msg.sender][uint(index2)];
     }
 
     function cancelMatch (address _with) public returns (bool) {
@@ -200,6 +203,12 @@ contract HouseRental {
             return true;
         }
         return false;
+    }
+
+    function resetMatch(address _with) public returns (bool) {
+        matchedPairs[msg.sender] = address(0);
+        matchedPairs[_with] = address(0);
+        return true;
     }
 
     // helpers

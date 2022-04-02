@@ -2,12 +2,10 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("House Rental", function () {
-
   let contract, rentalPlatform;
   let tenant, landlord;
   let [tenantName, tenantPassword, tenantType, tenantPhone, tenantEmail] = ["Terry", "123", "tenant", "666", "terry@ubc.com"];
   let [landlordName, landlordPassword, landlordType, landlordPhone, landlordEmail] = ["William", "456", "landlord", "666", "william@ubc.ca"];
-  let nullAddress = "0x0000000000000000000000000000000000000000";
 
   before(async function () {
     contract = await ethers.getContractFactory("HouseRental");
@@ -25,7 +23,9 @@ describe("House Rental", function () {
 
     it("2. Landlord and tenant can log into their accounts", async function () {
       await expect(rentalPlatform.logIn(tenantName, tenantPassword)).to.be.not.reverted;
-      await expect(rentalPlatform.connect(landlord).logIn(landlordName, landlordPassword)).to.be.not.reverted;
+      await expect(
+        rentalPlatform.connect(landlord).logIn(landlordName, landlordPassword)
+      ).to.be.not.reverted;
     });
   
     it("3. Landlord can edit house info", async function() {
@@ -86,6 +86,21 @@ describe("House Rental", function () {
     });
     
     it("11. Tenant can cancel the match", async function () {
+      //landlord makes the house available again
+      const [houseAddress, rental, description, period] = ["1210 W 1st", "2100", "For renting", "Available from 01/01/2022"];
+      await expect(rentalPlatform.connect(landlord).editHouseInfo(houseAddress, rental, description, period, true)).to.be.not.reverted;
+      
+      //send background again
+      await rentalPlatform.sendBackground(landlord.address);
+      await expect (await rentalPlatform.landlordTenantsMap(landlord.address, 1)).to.be.equal(tenant.address);
+
+      //send agreement again
+      await expect((await rentalPlatform.getPotentialLandlord()).includes(landlord.address)).to.be.false;
+      await expect({...await rentalPlatform.houses(landlord.address)}.isHouseAvailable).to.be.true;
+      await expect(rentalPlatform.connect(landlord).sendAgreement(tenant.address)).to.be.not.reverted;      
+      await expect((await rentalPlatform.getPotentialLandlord()).includes(landlord.address)).to.be.true;
+
+      //cancel match
       await expect(
         (await rentalPlatform.getPotentialLandlord()).includes(landlord.address)
       ).to.be.true;

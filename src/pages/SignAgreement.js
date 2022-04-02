@@ -8,6 +8,8 @@ function SignAgreement() {
   const [showLoader, setShowLoader] = useState(false);
   let [landlords, setLandlords] = useState([]);
 
+  const handleSignAgreement = async (event) => {};
+
   const handleCancelMatch = async (event) => {
     setShowLoader(true);
     const result = await contract.cancelMatch(
@@ -31,7 +33,7 @@ function SignAgreement() {
     getLandlords();
   }, []);
 
-  if (landlords.length == 0) {
+  if (landlords.length === 0) {
     return (
       <>
         <NavBar />
@@ -61,7 +63,7 @@ function SignAgreement() {
                   id={`check${index}`}
                   defaultChecked={index === 0 ? true : false}
                 />
-                <label className="accordion-label" htmlFor={`check${index}`}>
+                <label className="accordion-label agreement-landlord-name" htmlFor={`check${index}`}>
                   {`${name}`}
                 </label>
 
@@ -86,6 +88,7 @@ function SignAgreement() {
                       <button
                         className="btn-primary"
                         data-landlordaddress={landlordAddress}
+                        onClick={handleSignAgreement}
                       >
                         Sign Agreement
                       </button>

@@ -133,7 +133,7 @@ const LogIn = () => {
 
   const loader = () => {
     return (
-      <button className="btn-primary ee">
+      <button className="ee">
         <i className="fa fa-refresh fa-spin"></i>Loading
       </button>
     );

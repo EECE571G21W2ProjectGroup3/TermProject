@@ -70,6 +70,9 @@ h6 {
   color: var(--primaryColor);
   text-transform: capitalize;
 }
+.agreement-landlord-name {
+  text-transform: capitalize;
+}
 .btn-send-agreement {
   display: flex;
   margin-left: auto;
@@ -153,6 +156,9 @@ h6 {
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: var(--mainSpacing);
+}
+.welcome_user {
+  text-transform: capitalize;
 }
 .nav-links a:hover {
   color: var(--primaryColor);
@@ -434,7 +440,7 @@ h6 {
 }
 .loader {
   margin-top: 20rem;
-  left: 25%;
+  left: 20%;
   position: relative;
 }
 .desc,
