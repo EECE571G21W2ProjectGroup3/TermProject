@@ -27,14 +27,6 @@ input {
     text-align: center;
 }
 
-section {
-    min-height: 95vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .container {
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.199);
     padding: 50px 30px;
@@ -62,7 +54,7 @@ section {
 
 .signin-signup {
     position: absolute;
-    top: 50%;
+    top: 42%;
     transform: translate(-50%, -50%);
     left: 75%;
     width: 50%;
@@ -238,7 +230,7 @@ form.sign-in-form {
     color: rgb(255, 255, 255);
     transition: transform 0.9s ease-in-out;
     transition-delay: 0.6s;
-    margin-bottom: 10rem;
+    margin-bottom: 15rem;
 }
 
 .panel h3 {
