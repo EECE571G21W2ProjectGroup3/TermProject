@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import contractImg from "../images/contract.png";
 import NavBar from "../components/Navbar";
+import Loader from "../components/Loader";
 import { contractWrapper } from "../contractWrapper";
 
 function SignAgreement() {
@@ -60,16 +61,6 @@ function SignAgreement() {
     getMatchedPair();
   }, []);
 
-  const loader = () => {
-    return (
-      <>
-        <button className="btn-primary ee">
-          <i className="fa fa-refresh fa-spin"></i>Loading
-        </button>
-      </>
-    );
-  };
-
   const showNoLandlordMsg = () => {
     return (
       <>
@@ -96,7 +87,7 @@ function SignAgreement() {
             </h3>
             <form action=""></form>
             {showLoader ? (
-              loader()
+              <Loader />
             ) : (
               <button className="btn-primary" onClick={resetMatch}>
                 Start a new search
@@ -141,7 +132,9 @@ function SignAgreement() {
                       <img src={contractImg} alt="Contract" />
                     </div>
                     {showLoader ? (
-                      <div className="sign-agreement-btn">{loader()}</div>
+                      <div className="sign-agreement-btn">
+                        <Loader />
+                      </div>
                     ) : (
                       <div className="sign-agreement-btn">
                         <button

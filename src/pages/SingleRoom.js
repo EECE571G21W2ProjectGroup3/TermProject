@@ -4,6 +4,7 @@ import Banner from "../components/Banner";
 import { Link } from "react-router-dom";
 import { RoomContext } from "../context";
 import NavBar from "../components/Navbar";
+import Loader from "../components/Loader";
 import { contractWrapper } from "../contractWrapper";
 import StyledHero from "../components/StyledHero";
 
@@ -83,9 +84,7 @@ const SingleRoom = (props) => {
             <h6>availability : {isHouseAvailable ? "Yes" : "No"} </h6>
             {sessionStorage["userType"] === "tenant" &&
               (showLoader ? (
-                <button className="btn-primary ee">
-                  <i className="fa fa-refresh fa-spin"></i>Loading
-                </button>
+                <Loader />
               ) : (
                 <button
                   className="btn-primary"
