@@ -10,5 +10,6 @@
     <li>2022/03/24 Added MyTenants, MyBackground, and SignAgreement page UI</li>
     <li>2022/03/25 Added LogIn and SignUp page UI</li>
     <li>2022/03/27 Built a connection between frontend and smart contract using web3 API</li>
+    <li>2022/04/03 Deployed this fully functional web on https://decentralized-react-rental-platform-on-ethereum.netlify.app</li>
   </ul>
 </div>
