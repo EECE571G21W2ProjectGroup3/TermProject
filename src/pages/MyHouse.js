@@ -38,7 +38,10 @@ const MyHouse = ({ context }) => {
   const editForm = () => {
     let handleSubmit = async (formContent) => {
       let { description, rent, period, address, available } = formContent;
-      available = available.toLowerCase() === "true" ? true : false;
+      available =
+        available.toLowerCase() === "true" || available.toLowerCase() === "t"
+          ? true
+          : false;
       setShowLoader(true);
       const result = await contract.editHouseInfo(
         address,

@@ -76,16 +76,11 @@ export const contractWrapper = () => {
     return result;
   };
 
-  const editBackground = async (
-    age,
-    income,
-    isMale,
-    description
-  ) => {
+  const editBackground = async (age, income, isMale, description) => {
     let result = { result: "", error: "" };
     try {
       result.result = await deployedContract.methods
-        .editBackground(age,income,isMale,description)
+        .editBackground(age, income, isMale, description)
         .send({ from: sessionStorage.getItem("walletAddress") });
     } catch (err) {
       alert(err.message);
@@ -93,7 +88,6 @@ export const contractWrapper = () => {
     }
     return result;
   };
-
 
   const getUser = async (
     userAddress = sessionStorage.getItem("walletAddress")
