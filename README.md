@@ -22,6 +22,13 @@ More details about the design of this project could be found at our white paper:
 <br>Presentation slide: https://github.com/kwanhiuhong/React-Rental-Dapp-on-Blockchain/blob/main/readme_images/presentation.pdf
 <br>
 
+# Tech Stack Specification
+
+ReactJS version: ^16.8.6
+Web3.js: ^1.3.0
+Hardhat: ^4.0
+Solidity: 0.8.7
+
 # Demo
 
 ## Login Page
