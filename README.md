@@ -5,6 +5,7 @@ This DApp is hosted on Netlify at https://decentralized-react-rental-platform-on
 ## Table of Contents
 
 - [White Paper](#white-paper)
+- [Tech Stack Specification](#tech-stack-specification)
 - [Demo](#demo)
   - [Login Page](#login-page)
   - [Home Page](#home-page)
@@ -24,10 +25,10 @@ More details about the design of this project could be found at our white paper:
 
 # Tech Stack Specification
 
-ReactJS version: ^16.8.6
-Web3.js: ^1.3.0
-Hardhat: ^4.0
-Solidity: 0.8.7
+1. ReactJS version: ^16.8.6
+2. Web3.js: ^1.3.0
+3. Hardhat: ^4.0
+4. Solidity: 0.8.7
 
 # Demo
 
